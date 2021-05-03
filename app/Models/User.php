@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Usuario extends Authenticatable
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -18,7 +18,7 @@ class Usuario extends Authenticatable
     public $incrementing = false;
 
     protected $table = 'usuarios';
-    protected $primaryKey = 'email';
+    protected $primaryKey = 'alias';
 
     /**
      * The attributes that are mass assignable.
@@ -49,4 +49,19 @@ class Usuario extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * Definición de los métodos para modelar las relaciones
+     */
+
+    /**
+     * Los tópicos a los cuales está suscrito el usuario     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function topicos()
+    {
+        return $this->belongsToMany(Topico::class, 'suscripciones', 'alias_usuario', 'id_topico');
+    }
+
 }
