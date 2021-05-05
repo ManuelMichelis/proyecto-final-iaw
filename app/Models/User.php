@@ -52,11 +52,30 @@ class User extends Authenticatable
 
 
     /**
-     * Definición de los métodos para modelar las relaciones
+     * DEFINICIÓN DE LOS MÉTODOS PARA MODELAR RELACIONES
      */
 
     /**
-     * Los tópicos a los cuales está suscrito el usuario     *
+     * Los seguidores y seguidos que un usuario tiene
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function seguidos()
+    {
+        return $this->belongsToMany(User::class, 'seguimientos', 'alias_seguidor', 'alias_seguido');
+    }
+
+    public function seguidores()
+    {
+        return $this->belongsToMany(User::class, 'seguimientos', 'alias_seguido', 'alias_seguidor');
+    }
+    /**
+     * https://laracasts.com/discuss/channels/eloquent/laravel-eloquent-followers-relationship
+     * PARA CUANDO SE DEBA IMPLEMENTAR LA INSERCIÓN DE SEGUIDORES/SEGUIDOS
+     */
+
+
+    /**
+     * Los tópicos a los cuales está suscrito el usuario
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function topicos()

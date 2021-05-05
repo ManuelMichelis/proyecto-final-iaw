@@ -36,7 +36,7 @@ class Topico extends Model
      * Los tópicos a los cuales está suscrito el usuario     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function usuariosSuscriptos()
+    public function suscriptos()
     {
         return $this->belongsToMany(User::class, 'suscripciones', 'id_topico', 'alias_usuario');
     }
@@ -45,9 +45,9 @@ class Topico extends Model
      * Los tópicos asociados a un posteo     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function posteosAsociados()
+    public function exposiciones()
     {
-        return $this->belongsToMany(Posteo::class, 'topicos_posteos', 'id_topico', 'id_posteo');
+        return $this->belongsToMany(Posteo::class, 'exposiciones', 'id_topico', 'id_posteo');
     }
 
 }

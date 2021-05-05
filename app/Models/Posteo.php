@@ -30,7 +30,7 @@ class Posteo extends Model
 
 
     /**
-     * Definición de los métodos para modelar las relaciones
+     * DEFINICIÓN DE LOS MÉTODOS PARA MODELAR RELACIONES
      */
 
     /**
@@ -39,7 +39,36 @@ class Posteo extends Model
      */
     public function topicos()
     {
-        return $this->belongsToMany(Topico::class, 'topicos_posteos', 'id_posteo', 'id_topico');
+        return $this->belongsToMany(Topico::class, 'exposiciones', 'id_posteo', 'id_topico');
+    }
+
+    /**
+     * Los comentarios de un posteo y el posteo al cual hace referencia uno en particular
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function referido ()
+    {
+        return $this->belongsTo(Posteo::class, 'id_referido');
+    }
+
+    public function replicas ()
+    {
+        return $this->hasMany(Posteo::class, 'id_referido', 'id');
+    }
+
+    /**
+     * Las denuncias que puede recibir un posteo particular
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function denuncias ()
+    {
+        return $this->hasMany(Denuncia::class, 'id_denuncia', 'id_denunciado');
+    }
+
+
+    public function usuario ()
+    {
+        return $this->belongsTo(User::class, 'alias_usuario');
     }
 
 }

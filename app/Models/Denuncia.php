@@ -28,4 +28,18 @@ class Denuncia extends Model
         'detalle',
     ];
 
+
+    /**
+     * DEFINICIÓN DE LOS MÉTODOS PARA MODELAR RELACIONES
+     */
+
+    /**
+     * Posteo al cual le corresponde la denuncia
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function denunciado ()
+    {
+        return $this->belongsTo(Posteo::class, 'id_denunciado');
+    }
+
 }

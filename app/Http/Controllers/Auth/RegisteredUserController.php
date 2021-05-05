@@ -46,7 +46,28 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        /*
+        $us2 = User::create([
+            'alias' => 'User 2',
+            'email' => 'user2@gmail.com',
+            'password' => Hash::make($request->password),
+        ]);
+
+        $us3 = User::create([
+            'alias' => 'User 3',
+            'email' => 'user3@gmail.com',
+            'password' => Hash::make($request->password),
+        ]);
+
+        $us4 = User::create([
+            'alias' => 'User 4',
+            'email' => 'user4@gmail.com',
+            'password' => Hash::make($request->password),
+        ]);
+
+
+        $usuario->seguidores()->save($us2);
+        $usuario->seguidos()->save($us3);
+
         $topico1 = Topico::create([
             'nombre' => 'Computacion'
         ]);
@@ -56,15 +77,18 @@ class RegisteredUserController extends Controller
 
         $posteo1 = Posteo::create([
             'contenido' => '¡Python es el mejor lenguaje de programacion!',
-            'votos' => 100
+            'votos' => 100,
+            'alias_usuario' => $request->name,
         ]);
         $posteo2 = Posteo::create([
             'contenido' => '¿Alguien sabe como implementar una pila en Java?',
             'votos' => 5,
+            'alias_usuario' => $request->name,
         ]);
         $posteo3 = Posteo::create([
             'contenido' => 'El final de "Once upon a time in Hollywood" es genial ¿no les parece?',
             'votos' => 3149,
+            'alias_usuario' => $request->name,
         ]);
 
         // ASOCIO POSTEOS Y TOPICOS
@@ -75,11 +99,15 @@ class RegisteredUserController extends Controller
 
         $posteo1->refresh();
 
-        $usuario->topicos()->save($topico1);
-        $usuario->topicos()->save($topico2);
-
-        $posteoUno = $topico1->posteosAsociados()->where('id_posteo',1)->get();
-        error_log("\$topico1->posteosAsociados()->where('id_posteo',1)".$posteoUno);
+        // GUARDO SUSCRIPCIONES DE USUARIOS A TOPICOS
+        DB::insert('insert into suscripciones (alias_usuario, id_topico) values (?, ?)', ['User 1', 1]);
+        DB::insert('insert into suscripciones (alias_usuario, id_topico) values (?, ?)', ['User 1', 2]);
+        //$usuario->topicos()->save($topico1);
+        //$usuario->topicos()->save($topico2);
+        /////////////////////////////////////////////
+        /*
+        $posteoUno = $topico1->exposiciones()->where('id_posteo',1)->get();
+        error_log("\$topico1->exposiciones()->where('id_posteo',1)".$posteoUno);
         */
 
         event(new Registered($usuario));

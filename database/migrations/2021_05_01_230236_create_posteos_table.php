@@ -17,6 +17,9 @@ class CreatePosteosTable extends Migration
             $table->id();
             $table->string('contenido');
             $table->unsignedInteger('votos');
+            $table->string('alias_usuario');
+            $table->foreign('alias_usuario')->references('alias')->on('usuarios')->onDelete('cascade');
+            $table->unsignedInteger('id_referido')->nullable();
             $table->timestamps();
         });
     }

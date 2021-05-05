@@ -18,7 +18,6 @@ class CreateSuscripcionesTable extends Migration
             $table->unsignedInteger('id_topico');
             $table->foreign('alias_usuario')->references('alias')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_topico')->references('id')->on('topicos')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
