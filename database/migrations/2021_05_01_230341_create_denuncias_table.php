@@ -19,6 +19,8 @@ class CreateDenunciasTable extends Migration
             $table->string('detalle');
             $table->unsignedInteger('id_denunciado');
             $table->foreign('id_denunciado')->references('id')->on('posteos')->onDelete('cascade');
+            $table->string('alias_bloqueado');
+            $table->foreign('alias_bloqueado')->references('alias')->on('usuarios')->onDelete('cascade');
             $table->timestamps();
         });
     }

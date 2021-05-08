@@ -18,7 +18,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $posteos = App\Models\Posteo::all();
+    return view('dashboard')->with(compact('posteos'));
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

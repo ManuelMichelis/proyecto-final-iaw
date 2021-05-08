@@ -42,4 +42,13 @@ class Denuncia extends Model
         return $this->belongsTo(Posteo::class, 'id_denunciado');
     }
 
+    /**
+     * El usuario, si existe, que fue bloqueado consecuencia del posteo reportado
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function bloqueado ()
+    {
+        return $this->belongsTo(User::class, 'alias_usuario');
+    }
+
 }

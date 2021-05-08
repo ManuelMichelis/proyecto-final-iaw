@@ -15,11 +15,13 @@ class CreatePosteosTable extends Migration
     {
         Schema::create('posteos', function (Blueprint $table) {
             $table->id();
-            $table->string('contenido');
-            $table->unsignedInteger('votos');
+            $table->string('titulo')->nullable();
+            $table->string('contenido')->nullable(false);
+            $table->unsignedInteger('votos')->default(0);
             $table->string('alias_usuario');
             $table->foreign('alias_usuario')->references('alias')->on('usuarios')->onDelete('cascade');
             $table->unsignedInteger('id_referido')->nullable();
+            $table->foreign('id_referido')->references('id')->on('posteos')->onDelete('cascade');
             $table->timestamps();
         });
     }

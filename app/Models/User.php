@@ -50,7 +50,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
     /**
      * DEFINICIÓN DE LOS MÉTODOS PARA MODELAR RELACIONES
      */
@@ -73,7 +72,6 @@ class User extends Authenticatable
      * PARA CUANDO SE DEBA IMPLEMENTAR LA INSERCIÓN DE SEGUIDORES/SEGUIDOS
      */
 
-
     /**
      * Los tópicos a los cuales está suscrito el usuario
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -81,6 +79,24 @@ class User extends Authenticatable
     public function topicos()
     {
         return $this->belongsToMany(Topico::class, 'suscripciones', 'alias_usuario', 'id_topico');
+    }
+
+    /**
+     * Los tópicos a los cuales está suscrito el usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posteos()
+    {
+        return $this->hasMany(Posteo::class, 'publicaciones', 'alias_usuario', 'id_posteo');
+    }
+
+    /**
+     * Los bloqueos de cuenta que ha recibido el usuario
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function bloqueos()
+    {
+        return $this->hasMany(Denuncia::class, 'bloqueos', 'alias_usuario', 'id_denuncia');
     }
 
 }

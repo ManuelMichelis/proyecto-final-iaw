@@ -24,6 +24,7 @@ class Posteo extends Model
      * @var array
      */
     protected $fillable = [
+        'titulo',
         'contenido',
         'votos',
     ];
@@ -58,14 +59,17 @@ class Posteo extends Model
 
     /**
      * Las denuncias que puede recibir un posteo particular
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function denuncias ()
     {
         return $this->hasMany(Denuncia::class, 'id_denuncia', 'id_denunciado');
     }
 
-
+    /**
+     * Las denuncias que puede recibir un posteo particular
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function usuario ()
     {
         return $this->belongsTo(User::class, 'alias_usuario');
