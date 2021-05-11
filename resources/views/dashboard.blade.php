@@ -12,7 +12,7 @@
                     <div class="p-5 bg-white border-b border-gray-200">
                         {{ $posteo->alias_usuario }} - {{ $posteo->topicos()->first()->nombre }}
                         <div class="bg-white overflow-hidden sm:rounded-lg">
-                            <div class="p-2 bg-white"></div>
+                            <div class="p-2 bg-white">
                                 {{ $posteo->contenido }}
                             </div>
                         </div>
