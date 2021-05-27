@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,5 +20,7 @@ Route::get('/dashboard', function () {
     $posteos = App\Models\Posteo::all();
     return view('dashboard')->with(compact('posteos'));
 })->middleware(['auth'])->name('dashboard');
+
+Route::post('/dashboard', 'PostController@create')->name('nuevoPosteo');
 
 require __DIR__.'/auth.php';
