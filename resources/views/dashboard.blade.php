@@ -12,27 +12,10 @@
     <x-slot name="header">
     </x-slot>
     <br>
-    <a data-toggle="modal" href="#modal">
-        Modal
+    <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#create">
+        Nueva posteo
     </a>
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-header">
-                hola
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                chau
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-        </div>
-    </div>
+
     @foreach ($posteos as $posteo)
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -50,3 +33,4 @@
         </div>
     @endforeach
 </x-app-layout>
+@include('create')
