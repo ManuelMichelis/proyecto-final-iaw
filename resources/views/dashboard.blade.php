@@ -13,8 +13,13 @@
     <x-slot name="header">
     </x-slot>
     <br>
+<<<<<<< HEAD
     <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#createPosteo">
         Nuevo posteo
+=======
+    <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#create">
+        Nueva posteo
+>>>>>>> 6a817c2d27ca7e73161cc8ae114b98c4ead8bfaf
     </a>
 
     @foreach ($posteos as $posteo)
@@ -34,4 +39,8 @@
         </div>
     @endforeach
 </x-app-layout>
+<<<<<<< HEAD
 @include('createPosteo')
+=======
+@include('create')
+>>>>>>> 6a817c2d27ca7e73161cc8ae114b98c4ead8bfaf

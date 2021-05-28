@@ -25,5 +25,4 @@ Route::get('/dashboard', function () {
 
 Route::post('/dashboard', 'PostController@create')->name('nuevoPosteo');
 
-
 require __DIR__.'/auth.php';
