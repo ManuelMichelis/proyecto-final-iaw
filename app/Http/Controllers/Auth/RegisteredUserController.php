@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        /*
+
         $topico1 = Topico::create([
             'nombre' => 'Computacion'
         ]);
@@ -78,7 +78,7 @@ class RegisteredUserController extends Controller
         $posteo1->topicos()->save($topico1);
         $posteo2->topicos()->save($topico1);
         $posteo3->topicos()->save($topico2);
-        */
+
         event(new Registered($usuario));
 
         Auth::login($usuario);

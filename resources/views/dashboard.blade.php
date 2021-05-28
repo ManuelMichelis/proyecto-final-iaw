@@ -2,6 +2,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Popper JS -->
@@ -12,8 +13,8 @@
     <x-slot name="header">
     </x-slot>
     <br>
-    <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#create">
-        Nueva posteo
+    <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#createPosteo">
+        Nuevo posteo
     </a>
 
     @foreach ($posteos as $posteo)
@@ -33,4 +34,4 @@
         </div>
     @endforeach
 </x-app-layout>
-@include('create')
+@include('createPosteo')
