@@ -47,7 +47,7 @@ class Topico extends Model
      */
     public function exposiciones()
     {
-        return $this->belongsToMany(Posteo::class, 'exposiciones', 'id_topico', 'id_posteo');
+        return $this->hasMany(Posteo::class, 'id_posteo', 'id_topico_asociado');
     }
 
 }
