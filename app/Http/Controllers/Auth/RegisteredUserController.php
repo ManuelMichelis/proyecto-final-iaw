@@ -54,16 +54,19 @@ class RegisteredUserController extends Controller
         ]);
 
         $posteo1 = new Posteo;
-        $posteo1->contenido = '¡Python es el mejor lenguaje de programacion!';
-        $posteo1->votos = 100;
+        $posteo1->titulo = '¿Hay algo mejor que Python?';
+        $posteo1->contenido = '¡Python es el mejor lenguaje de programacion! Hasta ahora no vi otro lenguaje tan fácil de aprender y que se use mucho actualmente';
+        $posteo1->votos = 130;
 
         $posteo2 = new Posteo;
-        $posteo2->contenido = '¿Alguien sabe como implementar una pila en Java?';
-        $posteo2->votos = 100;
+        $posteo2->titulo = 'Duda con la ED pila y Java';
+        $posteo2->contenido = '¿Alguien sabe como implementar una pila en Java? No me queda claro cómo realizar la implementación';
+        $posteo2->votos = 320;
 
         $posteo3 = new Posteo;
+        $posteo3->titulo = "Final de Once upon a time in Hollywood";
         $posteo3->contenido = 'El final de "Once upon a time in Hollywood" es genial ¿no les parece?';
-        $posteo3->votos = 100;
+        $posteo3->votos = 1230;
 
         // ASOCIO POSTEOS Y TOPICOS
 
@@ -71,13 +74,13 @@ class RegisteredUserController extends Controller
         $posteo2->usuario()->associate($usuario);
         $posteo3->usuario()->associate($usuario);
 
+        $posteo1->topico()->associate($topico1);
+        $posteo2->topico()->associate($topico1);
+        $posteo3->topico()->associate($topico1);
+
         $posteo1->save();
         $posteo2->save();
         $posteo3->save();
-
-        $posteo1->topicos()->save($topico1);
-        $posteo2->topicos()->save($topico1);
-        $posteo3->topicos()->save($topico2);
 
         event(new Registered($usuario));
 

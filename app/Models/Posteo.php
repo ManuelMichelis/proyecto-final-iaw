@@ -38,9 +38,9 @@ class Posteo extends Model
      * Los tópicos a los cuales está suscrito el usuario     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function topicos()
+    public function topico()
     {
-        return $this->belongsToMany(Topico::class, 'exposiciones', 'id_posteo', 'id_topico');
+        return $this->belongsTo(Topico::class, 'id_topico_asociado');
     }
 
     /**

@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-<<<<<<< HEAD
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -20,11 +19,8 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <!-- Scripts locales -->
-=======
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
         <!-- Scripts -->
->>>>>>> 6a817c2d27ca7e73161cc8ae114b98c4ead8bfaf
         <script src="{{ asset('js/app.js') }}" defer></script>
 
     </head>
