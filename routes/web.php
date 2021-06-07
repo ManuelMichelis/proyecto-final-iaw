@@ -17,9 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Ruta al inicio (actualización de posteos)
 Route::get('/dashboard', function () {
-    $posteos = App\Models\Posteo::all();
-    return view('dashboard')->with(compact('posteos'));
+    $posteos = App\Models\Posteo::orderByDesc('created_at')->get();
+    $topicos = App\Models\Topico::all();
+    return view('dashboard')->with(compact('posteos'))->with(compact('topicos'));
 })->middleware(['auth'])->name('dashboard');
+
+Route::post('/dashboard', 'PostController@create')->name('nuevoPosteo');
+
+Route::post('/dashboard','PostController@addLike');
 
 require __DIR__.'/auth.php';
