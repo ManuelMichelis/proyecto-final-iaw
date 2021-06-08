@@ -76,9 +76,9 @@ class User extends Authenticatable
      * Los tópicos a los cuales está suscrito el usuario
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function topicos()
+    public function suscripciones()
     {
-        return $this->belongsToMany(Topico::class, 'suscripciones', 'alias_usuario', 'id_topico');
+        return $this->belongsToMany(Topico::class, 'suscripciones', 'alias_suscripto', 'id_topico');
     }
 
     /**
@@ -98,5 +98,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Denuncia::class, 'bloqueos', 'alias_usuario', 'id_denuncia');
     }
+
+    /**
+     * Los 'me gusta' que ha realizado el usuario sobre posteos
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function gustados()
+    {
+        return $this->hasMany(Posteo::class, 'votaciones', 'alias_usuario', 'id_posteo');
+    }
+
 
 }

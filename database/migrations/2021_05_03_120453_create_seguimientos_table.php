@@ -16,8 +16,10 @@ class CreateSeguimientosTable extends Migration
         Schema::create('seguimientos', function (Blueprint $table) {
             $table->string('alias_seguidor');
             $table->string('alias_seguido');
+            $table->unique(["alias_seguidor", "alias_seguido"], 'seguidor_seguido_unique');
             $table->foreign('alias_seguidor')->references('alias')->on('usuarios')->onDelete('cascade');
             $table->foreign('alias_seguido')->references('alias')->on('usuarios')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -29,5 +31,6 @@ class CreateSeguimientosTable extends Migration
     public function down()
     {
         Schema::dropIfExists('seguimientos');
+        //Schema::dropUnique('seguidor_seguido_unique');
     }
 }

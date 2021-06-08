@@ -38,7 +38,7 @@ class Topico extends Model
      */
     public function suscriptos()
     {
-        return $this->belongsToMany(User::class, 'suscripciones', 'id_topico', 'alias_usuario');
+        return $this->belongsToMany(User::class, 'suscripciones', 'id_topico', 'alias_suscripto');
     }
 
     /**

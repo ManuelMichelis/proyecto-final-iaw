@@ -76,15 +76,20 @@ class RegisteredUserController extends Controller
 
         $posteo1->topico()->associate($topico1);
         $posteo2->topico()->associate($topico1);
-        $posteo3->topico()->associate($topico1);
+        $posteo3->topico()->associate($topico2);
 
         $posteo1->save();
         $posteo2->save();
         $posteo3->save();
 
+        $usuario->suscripciones()->save($topico1);
+        $usuario->suscripciones()->save($topico2);
+
         event(new Registered($usuario));
 
         Auth::login($usuario);
+
+        $usuario->suscripciones()->save($topico1);
 
         return redirect(RouteServiceProvider::HOME);
     }

@@ -75,4 +75,9 @@ class Posteo extends Model
         return $this->belongsTo(User::class, 'alias_usuario');
     }
 
+    public function votantes ()
+    {
+        return $this->hasMany(User::class, 'votaciones', 'alias_usuario', 'id_posteo');
+    }
+
 }

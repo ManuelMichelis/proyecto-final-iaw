@@ -1,7 +1,7 @@
 <form method="POST">
     <link rel="stylesheet" href="css/app.css">
     @csrf
-    <div class="modal fade" id="createPosteo">
+    <div class="modal fade" id="modal-crear-posteo">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header text-center">
