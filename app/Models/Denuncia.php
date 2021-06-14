@@ -48,7 +48,7 @@ class Denuncia extends Model
      */
     public function bloqueado ()
     {
-        return $this->belongsTo(User::class, 'alias_usuario');
+        return $this->belongsTo(User::class, 'id_usuario');
     }
 
 }

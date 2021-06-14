@@ -1,0 +1,12 @@
+
+.interactionbtn {
+    padding-right: 20px;
+}
+
+.liked {
+    color:firebrick !important;
+}
+
+.unliked {
+    color:darkslategrey !important;
+}

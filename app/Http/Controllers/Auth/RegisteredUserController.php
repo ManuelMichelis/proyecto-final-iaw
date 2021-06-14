@@ -45,6 +45,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $usuario->save();
+        echo 'El id del usuario es '.$usuario->id;
 
         $topico1 = Topico::create([
             'nombre' => 'Computacion'
@@ -56,17 +58,17 @@ class RegisteredUserController extends Controller
         $posteo1 = new Posteo;
         $posteo1->titulo = '¿Hay algo mejor que Python?';
         $posteo1->contenido = '¡Python es el mejor lenguaje de programacion! Hasta ahora no vi otro lenguaje tan fácil de aprender y que se use mucho actualmente';
-        $posteo1->votos = 130;
+        $posteo1->votos = 0;
 
         $posteo2 = new Posteo;
         $posteo2->titulo = 'Duda con la ED pila y Java';
         $posteo2->contenido = '¿Alguien sabe como implementar una pila en Java? No me queda claro cómo realizar la implementación';
-        $posteo2->votos = 320;
+        $posteo2->votos = 0;
 
         $posteo3 = new Posteo;
         $posteo3->titulo = "Final de Once upon a time in Hollywood";
         $posteo3->contenido = 'El final de "Once upon a time in Hollywood" es genial ¿no les parece?';
-        $posteo3->votos = 1230;
+        $posteo3->votos = 0;
 
         // ASOCIO POSTEOS Y TOPICOS
 
@@ -88,8 +90,6 @@ class RegisteredUserController extends Controller
         event(new Registered($usuario));
 
         Auth::login($usuario);
-
-        $usuario->suscripciones()->save($topico1);
 
         return redirect(RouteServiceProvider::HOME);
     }

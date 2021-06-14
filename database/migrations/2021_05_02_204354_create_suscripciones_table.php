@@ -14,10 +14,10 @@ class CreateSuscripcionesTable extends Migration
     public function up()
     {
         Schema::create('suscripciones', function (Blueprint $table) {
-            $table->string('alias_suscripto');
+            $table->unsignedBigInteger('id_suscripto');
             $table->unsignedInteger('id_topico');
-            $table->unique(["alias_suscripto", "id_topico"], 'suscripto_topico_unique');
-            $table->foreign('alias_suscripto')->references('alias')->on('usuarios')->onDelete('cascade');
+            $table->unique(["id_suscripto", "id_topico"], 'usuario_topico_unique');
+            $table->foreign('id_suscripto')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_topico')->references('id')->on('topicos')->onDelete('cascade');
         });
     }

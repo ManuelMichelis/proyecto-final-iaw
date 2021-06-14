@@ -14,10 +14,10 @@ class CreateExposicionesTable extends Migration
     public function up()
     {
         Schema::create('exposiciones', function (Blueprint $table) {
-            $table->unsignedInteger('id_posteo')->primary();
+            $table->unsignedBigInteger('id_posteo')->primary();
             $table->unsignedInteger('id_topico');
             $table->foreign('id_posteo')->references('id')->on('posteos')->onDelete('cascade');
-            $table->foreign('id_topico')->references('id')->on('posteos')->onDelete('cascade');
+            $table->foreign('id_topico')->references('id')->on('topicos')->onDelete('cascade');
         });
     }
 

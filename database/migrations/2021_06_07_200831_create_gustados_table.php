@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVotacionesTable extends Migration
+class CreateGustadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateVotacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('votaciones', function (Blueprint $table) {
-            $table->string('alias_votante');
-            $table->unsignedInteger('id_posteo');
-            $table->unique(["alias_votante", "id_posteo"], 'votante_posteo_unique');
-            $table->foreign('alias_votante')->references('alias')->on('usuarios')->onDelete('cascade');
+        Schema::create('gustados', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_usuario');
+            $table->unsignedBigInteger('id_posteo');
+            $table->unique(["id_usuario", "id_posteo"], 'gustado_usuario_posteo_unique');
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_posteo')->references('id')->on('posteos')->onDelete('cascade');
             $table->timestamps();
         });
@@ -30,7 +30,7 @@ class CreateVotacionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('votaciones');
+        Schema::dropIfExists('gustados');
         //Schema::dropUnique('votante_posteo_unique');
     }
 }

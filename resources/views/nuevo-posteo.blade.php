@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group">
                         <!--label for="titulo">Título</!--label-->
-                        <input type="email" name="titulo" class="form-control" placeholder="Titulo del posteo">
+                        <input type="text" name="titulo" class="form-control" placeholder="Titulo del posteo">
                     </div>
                     <div class="form-group">
                     <!--label for="contenido">Contenido</!--label-->

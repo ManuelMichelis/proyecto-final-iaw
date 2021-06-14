@@ -15,10 +15,9 @@ class User extends Authenticatable
      * Atributos agregados manualmente
      *
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     protected $table = 'usuarios';
-    protected $primaryKey = 'alias';
 
     /**
      * The attributes that are mass assignable.
@@ -60,12 +59,12 @@ class User extends Authenticatable
      */
     public function seguidos()
     {
-        return $this->belongsToMany(User::class, 'seguimientos', 'alias_seguidor', 'alias_seguido');
+        return $this->belongsToMany(User::class, 'seguimientos', 'id_seguidor', 'id_seguido');
     }
 
     public function seguidores()
     {
-        return $this->belongsToMany(User::class, 'seguimientos', 'alias_seguido', 'alias_seguidor');
+        return $this->belongsToMany(User::class, 'seguimientos', 'id_seguido', 'id_seguidor');
     }
     /**
      * https://laracasts.com/discuss/channels/eloquent/laravel-eloquent-followers-relationship
@@ -78,7 +77,7 @@ class User extends Authenticatable
      */
     public function suscripciones()
     {
-        return $this->belongsToMany(Topico::class, 'suscripciones', 'alias_suscripto', 'id_topico');
+        return $this->belongsToMany(Topico::class, 'suscripciones', 'id_suscripto', 'id_topico');
     }
 
     /**
@@ -87,7 +86,7 @@ class User extends Authenticatable
      */
     public function posteos()
     {
-        return $this->hasMany(Posteo::class, 'publicaciones', 'alias_usuario', 'id_posteo');
+        return $this->hasMany(Posteo::class, 'publicaciones', 'id_usuario', 'id_posteo');
     }
 
     /**
@@ -96,7 +95,7 @@ class User extends Authenticatable
      */
     public function bloqueos()
     {
-        return $this->hasMany(Denuncia::class, 'bloqueos', 'alias_usuario', 'id_denuncia');
+        return $this->hasMany(Denuncia::class, 'bloqueos', 'id_usuario', 'id_denuncia');
     }
 
     /**
@@ -105,7 +104,7 @@ class User extends Authenticatable
      */
     public function gustados()
     {
-        return $this->hasMany(Posteo::class, 'votaciones', 'alias_usuario', 'id_posteo');
+        return $this->belongsToMany(Posteo::class, 'gustados', 'id_usuario', 'id_posteo');
     }
 
 

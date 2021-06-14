@@ -14,11 +14,11 @@ class CreateSeguimientosTable extends Migration
     public function up()
     {
         Schema::create('seguimientos', function (Blueprint $table) {
-            $table->string('alias_seguidor');
-            $table->string('alias_seguido');
-            $table->unique(["alias_seguidor", "alias_seguido"], 'seguidor_seguido_unique');
-            $table->foreign('alias_seguidor')->references('alias')->on('usuarios')->onDelete('cascade');
-            $table->foreign('alias_seguido')->references('alias')->on('usuarios')->onDelete('cascade');
+            $table->unsignedBigInteger('id_seguidor');
+            $table->unsignedBigInteger('id_seguido');
+            $table->unique(["id_seguidor", "id_seguido"], 'seguidor_seguido_unique');
+            $table->foreign('id_seguidor')->references('id')->on('usuarios')->onDelete('cascade');
+            $table->foreign('id_seguido')->references('id')->on('usuarios')->onDelete('cascade');
             $table->timestamps();
         });
     }

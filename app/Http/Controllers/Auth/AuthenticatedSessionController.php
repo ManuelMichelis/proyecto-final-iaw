@@ -33,8 +33,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        //$posteos = Posteo::all();
-
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

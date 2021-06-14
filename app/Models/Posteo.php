@@ -29,6 +29,15 @@ class Posteo extends Model
         'votos',
     ];
 
+    /**
+     * Para un dado modelo de usuario, retorna 'true' si el usuario es votante del posteo
+     */
+    public function esVotante (User $usuario)
+    {
+        $esVotante = $this->votantes()->get()->contains($usuario);
+        return $esVotante;
+    }
+
 
     /**
      * DEFINICIÓN DE LOS MÉTODOS PARA MODELAR RELACIONES
@@ -72,12 +81,17 @@ class Posteo extends Model
      */
     public function usuario ()
     {
-        return $this->belongsTo(User::class, 'alias_usuario');
+        return $this->belongsTo(User::class, 'id_usuario');
+    }
+
+    public function aliasUsuario ()
+    {
+        return $this->usuario()->first()->alias;
     }
 
     public function votantes ()
     {
-        return $this->hasMany(User::class, 'votaciones', 'alias_usuario', 'id_posteo');
+        return $this->belongsToMany(User::class, 'gustados', 'id_posteo', 'id_usuario');
     }
 
 }

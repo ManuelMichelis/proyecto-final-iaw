@@ -19,13 +19,15 @@ Route::get('/', function () {
 
 // Ruta al inicio (actualización de posteos)
 Route::get('/dashboard', function () {
-    $posteos = App\Models\Posteo::orderByDesc('created_at')->get();
+    $posteos = App\Models\Posteo::orderByDesc('id')->get();
     $topicos = App\Models\Topico::all();
     return view('dashboard')->with(compact('posteos'))->with(compact('topicos'));
 })->middleware(['auth'])->name('dashboard');
 
 Route::post('/dashboard', 'PostController@create')->name('nuevoPosteo');
 
-Route::post('/dashboard','PostController@addLike');
+Route::post('/like/id={id}','PostController@updateLike')->name('nuevoLike');
+
+Route::post('/del/id={id}','PostController@delete')->name('borrarPosteo');
 
 require __DIR__.'/auth.php';

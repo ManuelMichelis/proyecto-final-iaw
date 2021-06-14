@@ -14,7 +14,7 @@ class CreateDenunciasTable extends Migration
     public function up()
     {
         Schema::create('denuncias', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('motivo');
             $table->string('detalle');
             $table->unsignedInteger('id_denunciado');
