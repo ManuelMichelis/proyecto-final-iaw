@@ -19,7 +19,7 @@ class CreateSeguimientosTable extends Migration
             $table->unique(["id_seguidor", "id_seguido"], 'seguidor_seguido_unique');
             $table->foreign('id_seguidor')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_seguido')->references('id')->on('usuarios')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

@@ -86,7 +86,7 @@ class User extends Authenticatable
      */
     public function posteos()
     {
-        return $this->hasMany(Posteo::class, 'publicaciones', 'id_usuario', 'id_posteo');
+        return $this->hasMany(Posteo::class, 'id_usuario', 'id');
     }
 
     /**
@@ -95,7 +95,7 @@ class User extends Authenticatable
      */
     public function bloqueos()
     {
-        return $this->hasMany(Denuncia::class, 'bloqueos', 'id_usuario', 'id_denuncia');
+        return $this->hasMany(Denuncia::class, 'id_usuario', 'id_denuncia');
     }
 
     /**
@@ -107,5 +107,46 @@ class User extends Authenticatable
         return $this->belongsToMany(Posteo::class, 'gustados', 'id_usuario', 'id_posteo');
     }
 
+
+    /**
+     * Controla si un dado posteo fue publicado por el usuario en sesion
+     */
+    public function haPublicado (Posteo $posteo)
+    {
+        $idUsuario = $posteo->id_usuario;
+        $miId = $this->id;
+        return $idUsuario == $miId;
+    }
+
+
+    /**
+     * Determina si el usuario sigue a otro, con modelo dado como argumento
+     */
+    public function sigue (User $user)
+    {
+        $id = $user->id;
+        $seguido = $this->seguidos->where('id', $id)->first();
+        return $seguido != null;
+    }
+
+    /**
+     * Determina si el usuario esta suscripto al topico dado como
+     * argumento
+     */
+    public function suscripto (Topico $topico)
+    {
+        $id = $topico->id;
+        $suscripcion = $this->suscripciones->where('id', $id)->first();
+        return $suscripcion != null;
+    }
+
+
+    /**
+     * Retorna la coleccion de posteos realizados por el usuario
+     */
+    public function discusionesOriginadas ()
+    {
+        return $this->posteos->where('titulo','!=', null);
+    }
 
 }

@@ -19,6 +19,7 @@ class CreateSuscripcionesTable extends Migration
             $table->unique(["id_suscripto", "id_topico"], 'usuario_topico_unique');
             $table->foreign('id_suscripto')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_topico')->references('id')->on('topicos')->onDelete('cascade');
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
