@@ -18,6 +18,7 @@ class CreateExposicionesTable extends Migration
             $table->unsignedInteger('id_topico');
             $table->foreign('id_posteo')->references('id')->on('posteos')->onDelete('cascade');
             $table->foreign('id_topico')->references('id')->on('topicos')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

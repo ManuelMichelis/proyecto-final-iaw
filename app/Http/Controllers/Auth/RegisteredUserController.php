@@ -46,14 +46,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
         $usuario->save();
-        echo 'El id del usuario es '.$usuario->id;
 
-        $topico1 = Topico::create([
-            'nombre' => 'Computacion'
-        ]);
-        $topico2 = Topico::create([
-            'nombre' => 'Peliculas'
-        ]);
 
         $posteo1 = new Posteo;
         $posteo1->titulo = '¿Hay algo mejor que Python?';
@@ -70,22 +63,43 @@ class RegisteredUserController extends Controller
         $posteo3->contenido = 'El final de "Once upon a time in Hollywood" es genial ¿no les parece?';
         $posteo3->votos = 0;
 
+        $posteo4 = new Posteo;
+        $posteo4->titulo = "Próximo Presidente";
+        $posteo4->contenido = '¿Quién creen que tiene más chances de ser Presidente para el 2023? Tengo más dudas que certezas...';
+        $posteo4->votos = 0;
+
+        $posteo5 = new Posteo;
+        $posteo5->titulo = "¿Se arriesgarían a comprar bitcoin?";
+        $posteo5->contenido = 'Con lo volátil que es el bitcoin, no me termino de dar cuenta si conviene comprar o no. Como sube, cae. Denme sus opiniones';
+        $posteo5->votos = 0;
+
         // ASOCIO POSTEOS Y TOPICOS
+
+        $tComputacion = Topico::where('nombre', 'Computación')->first();
+        $tSeriesPeliculas = Topico::where('nombre', 'Series y películas')->first();
+        $tPolitica = Topico::where('nombre', 'Política')->first();
+        $tEconomiaMercados = Topico::where('nombre', 'Dinero y mercados')->first();
 
         $posteo1->usuario()->associate($usuario);
         $posteo2->usuario()->associate($usuario);
         $posteo3->usuario()->associate($usuario);
+        $posteo4->usuario()->associate($usuario);
+        $posteo5->usuario()->associate($usuario);
 
-        $posteo1->topico()->associate($topico1);
-        $posteo2->topico()->associate($topico1);
-        $posteo3->topico()->associate($topico2);
+        $posteo1->topico()->associate($tComputacion);
+        $posteo2->topico()->associate($tComputacion);
+        $posteo3->topico()->associate($tSeriesPeliculas);
+        $posteo4->topico()->associate($tPolitica);
+        $posteo5->topico()->associate($tEconomiaMercados);
 
         $posteo1->save();
         $posteo2->save();
         $posteo3->save();
+        $posteo4->save();
+        $posteo5->save();
 
-        $usuario->suscripciones()->save($topico1);
-        $usuario->suscripciones()->save($topico2);
+        $usuario->suscripciones()->save($tComputacion);
+        $usuario->suscripciones()->save($tSeriesPeliculas);
 
         event(new Registered($usuario));
 

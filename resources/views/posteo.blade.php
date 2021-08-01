@@ -29,17 +29,21 @@
                     text-align: center;
                 }
             </style>
-            <button type="button" class="btn btn-dark roundbtn" data-toggle="modal" data-target="#modal-nuevo-posteo">
-                <i class="fas fa-pencil-alt fa-2x"></i>
+            <button type="button" class="btn btn-dark roundbtn" data-toggle="modal" data-target="#modal-nuevo-comentario">
+                <i class="fas fa-comment-dots fa-2x"></i>
             </button>
-            @foreach ($posteos as $posteo)
-                @include('components.tarj-presentacion-posteo', $posteo)
+
+            @include('components.md-nuevo-comentario', $posteo)
+
+            @include('components.tarj-principal-posteo', ['posteo' => $posteo])
+
+            @foreach ($comentarios as $comentario)
+
+                @include('components.tarj-comentario', ['posteo' => $comentario])
+
             @endforeach
+
         </div>
     </div>
 
-    @include('components/md-nuevo-posteo', $topicos);
-
 </x-app-layout>
-
-

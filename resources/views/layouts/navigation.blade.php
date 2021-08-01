@@ -13,10 +13,36 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" style="text-decoration: none">
                         <span class="material-icons">
-                            home
+                            public
                         </span>
+                        &nbsp;
+                        <b>
+                            Inicio
+                        </b>
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('verUsuario')" style="text-decoration: none">
+                        <span class="material-icons">
+                            recommend
+                        </span>
+                        &nbsp;
+                        <b>
+                            Sugerencias
+                        </b>
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('mostrarTopicos')" :active="request()->routeIs('mostrarTopicos')" style="text-decoration: none">
+                        <span class="material-icons">
+                            menu_book
+                        </span>
+                        &nbsp;
+                        <b>
+                            Tópicos del foro
+                        </b>
                     </x-nav-link>
                 </div>
             </div>
@@ -32,7 +58,7 @@
                             </span>
                             &nbsp;
                             <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                <div>
+                                <div style="font-size: 1.04rem">
                                     {{ Auth::user()->alias }}
                                 </div>
                                 <div class="ml-1">
@@ -45,10 +71,25 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <form method="GET" action="{{ route('verUsuario', ['alias' => Auth::user()->alias]) }}">
+                            <x-dropdown-link onclick="event.preventDefault(); this.closest('form').submit();">
+                                <div class="d-flex justify-content-start">
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-icons">
+                                            person_outline
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        &nbsp;
+                                        {{ __('Perfil') }}
+                                    </div>
+                                </div>
+                            </x-dropdown-link>
+                        </form>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                            <x-dropdown-link onclick="event.preventDefault(); this.closest('form').submit();">
                                 <div class="d-flex justify-content-start">
                                     <div class="d-flex align-items-center">
                                         <span class="material-icons">

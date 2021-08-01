@@ -10,6 +10,7 @@ Document
 /**
 Use a better box model (opinionated).
 */
+@import url('http://fonts.cdnfonts.com/css/karu');
 
 *,
 *::before,
@@ -11427,7 +11428,7 @@ select {
 }
 
 .font-serif {
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-family: 'Karu', sans-serif;
 }
 
 .font-mono {
@@ -32086,6 +32087,25 @@ select {
 
 .backdrop-sepia {
   --tw-backdrop-sepia: sepia(100%);
+}
+
+.roundbtn-big {
+  position: fixed;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.33;
+}
+
+.roundbtn {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
 }
 
 @media (min-width: 640px) {
@@ -187942,4 +187962,8 @@ select {
     --tw-backdrop-sepia: sepia(100%);
   }
 }
+
+
+
+
 

@@ -19,7 +19,7 @@ class CreateGustadosTable extends Migration
             $table->unique(["id_usuario", "id_posteo"], 'gustado_usuario_posteo_unique');
             $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_posteo')->references('id')->on('posteos')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

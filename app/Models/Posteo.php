@@ -61,7 +61,7 @@ class Posteo extends Model
         return $this->belongsTo(Posteo::class, 'id_referido');
     }
 
-    public function replicas ()
+    public function comentarios ()
     {
         return $this->hasMany(Posteo::class, 'id_referido', 'id');
     }

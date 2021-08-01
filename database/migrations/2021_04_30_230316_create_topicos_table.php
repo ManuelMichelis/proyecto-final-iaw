@@ -16,6 +16,7 @@ class CreateTopicosTable extends Migration
         Schema::create('topicos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique();
+            $table->longText('icono');
             $table->timestamps();
         });
     }
