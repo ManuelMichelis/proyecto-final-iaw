@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="d-flex align-items-center">
                                         &nbsp;
-                                        {{ __('Log out') }}
+                                        {{ __('Salir') }}
                                     </div>
                                 </div>
                             </x-dropdown-link>

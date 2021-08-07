@@ -20,28 +20,29 @@ function requestVotar (id, csrfToken, route)
         },
         success: function(response){
             // Recupero el componente asociado al boton y lo pinto, si se agreg
-            componenteBtn = document.getElementById('skin_mg_' + id);
-            componenteVotos = document.getElementById('votos_p_' + id);
+            skinBtn = document.getElementById('btn-mg-skin-' + id);
+            componenteVotos = document.getElementById('votos_posteo_' + id);
             let gustado = response.data.gustado;
             let votos = response.data.votos;
             let claseVieja;
             let claseNueva;
-            // Determino la clase CSS a eliminar y la que debo agregar
+            // Determino la clase CSS a eliminar y por agregar, ademas de actualizar los 'me gusta'
             if (gustado)
             {
-                claseVieja = 'unliked';
-                claseNueva = 'liked';
+                claseVieja = 'estado-no-gustado';
+                claseNueva = 'estado-gustado';
+                componenteVotos.innerHTML = '<b>' + votos + ' me gusta </b>';
             }
             else
             {
-                claseVieja = 'liked';
-                claseNueva = 'unliked';
+                claseVieja = 'estado-gustado';
+                claseNueva = 'estado-no-gustado';
+                componenteVotos.innerHTML = votos + ' me gusta';
             }
             // Elimino la clase CSS vieja e incorporo la nueva, modificando el color del boton
-            componenteBtn.classList.remove(claseVieja);
-            componenteBtn.classList.add(claseNueva);
-            // Actualizo la cantidad de 'me gusta' del posteo en el componente correspondiente
-            componenteVotos.innerText = votos + " me gusta";
+            skinBtn.classList.remove(claseVieja);
+            skinBtn.classList.add(claseNueva);
+
 
         },
         error: function (response) {

@@ -15,10 +15,12 @@ class PerfilController extends Controller
     public function ver ($alias)
     {
         $usuario = User::where('alias', $alias)->first();
+        $posteos = $usuario->posteos()->orderByDesc('id')->get();
         if ($usuario != null)
         {
             return view('perfil-usuario')
-                ->with('usuario', $usuario);
+                ->with('usuario', $usuario)
+                ->with('posteos', $posteos);
         }
     }
 

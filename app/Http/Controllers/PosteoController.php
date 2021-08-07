@@ -28,7 +28,8 @@ class PosteoController extends Controller
 
 
     /**
-     *
+     * Crea un nuevo comentario para el usuario en sesion, tomando un titulo,
+     * contenido y posteo al que refiere
      */
     public function crearComentario (Request $request)
     {
@@ -50,22 +51,14 @@ class PosteoController extends Controller
                 return redirect()->back();
             }
         }
-
     }
-
-    private function nuevo (Request $request)
-    {
-
-    }
-
-
 
 
     /**
      * Actualiza el 'gustado' de un posteo con ID dado como argumento
      * para el usuario en sesion
      */
-    public function actualizarMG ($id)
+    public function actualizarGustado ($id)
     {
         // Asumo que no existe el 'me gusta'. Esto es, debo registrarlo
         $estado = null;
@@ -96,6 +89,10 @@ class PosteoController extends Controller
     }
 
 
+    /**
+     * Muestra la discusion de un posteo generado por un usuario particular,
+     * incluyendo sus comentarios
+     */
     public function ver ($id)
     {
         if (is_numeric($id))
@@ -105,7 +102,7 @@ class PosteoController extends Controller
             if ($posteo != null)
             {
                 $comentarios = $posteo->comentarios->sortByDesc('votos');
-                return view('posteo')
+                return view('discusion-posteo')
                     ->with('posteo', $posteo)
                     ->with('comentarios', $comentarios);
             }

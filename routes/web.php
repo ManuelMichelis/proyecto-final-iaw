@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
     Route::post('/dashboard', 'PosteoController@crearPosteo')->name('nuevoPosteo');
 
     // 'Me gusta' para un determinado posteo
-    Route::post('/gustar/id={id}','PosteoController@actualizarMG')->name('nuevoLike');
+    Route::post('/gustar/id={id}','PosteoController@actualizarGustado')->name('actualizarGustado');
 
     // Eliminacion de un determinado posteo
     Route::post('/borrar/id={id}','PosteoController@eliminar')->name('borrarPosteo');

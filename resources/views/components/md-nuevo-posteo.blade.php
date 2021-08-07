@@ -31,7 +31,7 @@
                             type="text"
                             name="titulo"
                             class="form-control"
-                            placeholder="Titulo del posteo (ayuda: idea principal del tema)">
+                            placeholder="Título del posteo (ayuda: idea principal del tema)">
                     </div>
                     <div class="form-group">
                     <!--label for="contenido">Contenido</!--label-->
@@ -39,7 +39,7 @@
                         type="text"
                         name="contenido"
                         class="form-control"
-                        placeholder="Contanos de que se trata este nuevo tema" rows="3"></textarea>
+                        placeholder="Contanos de qué se trata este nuevo tema" rows="8"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

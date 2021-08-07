@@ -1,0 +1,28 @@
+    /* ESTILOS PARA LAS TARJETAS DE LOS POSTEOS */
+
+    .estado-no-gustado {
+        color: #222222
+    }
+
+    .estado-gustado {
+        color: #ac2e2e
+    }
+
+    .label-topico {
+        color: dimgray
+    }
+
+
+
+    button:focus {
+        outline: none;
+        color: #fff;
+    }
+
+    .tarjeta-font {
+        font-size: 1.03rem;
+    }
+
+    .botones-font {
+        font-size: 0.93rem;
+    }
