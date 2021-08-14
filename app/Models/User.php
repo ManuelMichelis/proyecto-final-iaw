@@ -144,9 +144,80 @@ class User extends Authenticatable
     /**
      * Retorna la coleccion de posteos realizados por el usuario
      */
-    public function discusionesOriginadas ()
+    public function discusionesGeneradas ()
     {
         return $this->posteos->where('titulo','!=', null);
+    }
+
+
+    /**
+     * Retorna una coleccion de IDs de los posteos que gustaron al
+     * usuario y no fueron publicados por el
+     *
+     * NOTA: no considerar posteos publicados por el, implica que
+     * el valor de un posteo, para ser recomendado, depende solo de
+     * la participacion de terceros en la discusion
+     */
+    public function idsExposicionesGustadas ()
+    {
+        $miId = $this->id;
+        $gustados = $this->gustados;
+        $coleccionIds = [];
+        foreach ($gustados as $meGusta)
+        {
+            $idPosteo = $meGusta->id;
+            $posteo = Posteo::where('id', $idPosteo)->first();
+            // Si el posteo no es un comentario, tiene mi 'me gusta' y no es mio, considero su ID
+            if (!$posteo->esComentario() && $posteo->id_usuario != $miId)
+            {
+                array_push($coleccionIds, $idPosteo);
+            }
+        }
+        return $coleccionIds;
+    }
+
+
+    /**
+     * Retorna una coleccion de IDs de los posteos que comento el
+     * usuario y no fueron publicados por el
+     *
+     * NOTA: no considerar posteos publicados por el, implica que
+     * el valor de un posteo, para ser recomendado, depende solo de
+     * la participacion de terceros en la discusion
+     */
+    public function idsExposicionesDebatidas ()
+    {
+        $miId = $this->id;
+        $coleccionIds = [];
+        $comentarios = $this->posteos->where('id_referido', '!=', null);
+        // Para cada commentario del usuario, obtengo los ID de posteos que comento y que no sean suyos
+        foreach ($comentarios as $comentario)
+        {
+            $idReferido = $comentario->id_referido;
+            $posteo = Posteo::where('id', $idReferido)->first();
+            // Si el posteo principal no es mio, entonces considero el id del comentario para la coleccion
+            if (!$posteo->esComentario() && $posteo->id_usuario != $miId)
+            {
+                array_push($coleccionIds, $idReferido);
+            }
+        }
+        return $coleccionIds;
+    }
+
+
+    /**
+     * Retorna una coleccion de IDs de los topicos a los cuales
+     * el usuario esta suscripto
+     */
+    public function idsTopicosSuscriptos ()
+    {
+        $coleccionIds = [];
+        $topicos = $this->suscripciones;
+        foreach ($topicos as $topico)
+        {
+            array_push($coleccionIds, $topico->id);
+        }
+        return $coleccionIds;
     }
 
 }
