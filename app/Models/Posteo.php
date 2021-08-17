@@ -31,26 +31,6 @@ class Posteo extends Model
 
 
     /**
-     * Retorna 'true' si el posteo corresponde a un comentario
-     * y 'false' en caso contrario
-     */
-    public function esComentario ()
-    {
-        return $this->id_referido != null;
-    }
-
-
-    /**
-     * Para un dado modelo de usuario, retorna 'true' si el usuario es votante del posteo
-     */
-    public function esVotante (User $usuario)
-    {
-        $esVotante = $this->votantes()->get()->contains($usuario);
-        return $esVotante;
-    }
-
-
-    /**
      * DEFINICIÓN DE LOS MÉTODOS PARA MODELAR RELACIONES
      */
 
@@ -120,6 +100,36 @@ class Posteo extends Model
     public function votantes ()
     {
         return $this->belongsToMany(User::class, 'gustados', 'id_posteo', 'id_usuario');
+    }
+
+
+    /**
+     * Los usuarios a los cuales se les recomendo actualmente el posteo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function sugeridos ()
+    {
+        return $this->belongsToMany(User::class, 'posteos_recomendados', 'id_posteo', 'id_usuario');
+    }
+
+
+    /**
+     * Retorna 'true' si el posteo corresponde a un comentario
+     * y 'false' en caso contrario
+     */
+    public function esComentario ()
+    {
+        return $this->id_referido != null;
+    }
+
+
+    /**
+     * Para un dado modelo de usuario, retorna 'true' si el usuario es votante del posteo
+     */
+    public function esVotante (User $usuario)
+    {
+        $esVotante = $this->votantes()->get()->contains($usuario);
+        return $esVotante;
     }
 
 

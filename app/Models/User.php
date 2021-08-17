@@ -89,6 +89,37 @@ class User extends Authenticatable
         return $this->hasMany(Posteo::class, 'id_usuario', 'id');
     }
 
+
+    /**
+     * Los usuarios que le son recomendados actualmente al usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function usuariosRecomendados()
+    {
+        return $this->belongsToMany(User::class, 'usuarios_recomendados', 'id_usuario', 'id_usuario_recomendado');
+    }
+
+
+    /**
+     * Los usuarios que le son recomendados actualmente al usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function sugeridos ()
+    {
+        return $this->belongsToMany(User::class, 'usuarios_recomendados', 'id_usuario_2', 'id_usuario_1');
+    }
+
+
+    /**
+     * Los posteos que le son recomendados actualmente al usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posteosRecomendados()
+    {
+        return $this->belongsToMany(Posteo::class, 'posteos_recomendados', 'id_usuario', 'id_posteo');
+    }
+
+
     /**
      * Los bloqueos de cuenta que ha recibido el usuario
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

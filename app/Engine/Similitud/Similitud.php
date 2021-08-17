@@ -1,15 +1,23 @@
 <?php
 
-namespace Libraries\Similitud;
+namespace Engine\Similitud;
 
-abstract class Similitud
+class Similitud
 {
+
+    /**
+     * Constructor oculto
+     */
+    private function __construct ()
+    {
+
+    }
 
     /**
      * Retorna el cociente de la cardinalidad de la interseccion sobre
      * la de la union de ambos conjuntos
      */
-    protected function jaccardSimple (Array $conjuntoA, Array $conjuntoB)
+    public static function jaccardSimple (Array $conjuntoA, Array $conjuntoB)
     {
         $interseccion = array_unique(array_intersect($conjuntoA, $conjuntoB));
         $cantIntersec = count($interseccion);
@@ -23,7 +31,7 @@ abstract class Similitud
      * Retorna el cociente de la cardinalidad de la interseccion sobre
      * la de la union de los dos primeros conjuntos con los dos ultimos
      */
-    protected function jaccardComplejo (
+    public static function jaccardComplejo (
         Array $conjuntoA,
         Array $conjuntoB,
         Array $conjuntoC,
@@ -41,19 +49,5 @@ abstract class Similitud
         $cantUnion = count($union);
         return ($cantIntersecAB + $cantIntersecCD) / $cantUnion;
     }
-
-
-    /**
-     * Construye una matriz de similitud entre objetos de una coleccion
-     * de modelos, en base a un criterio definido por el programador
-     */
-    public abstract function matrizSimilitud ();
-
-
-    /**
-     * Calcula el puntaje de similitud que existe entre dos modelos y
-     * lo retorna, en base a un criterio definido por el programador
-     */
-    protected abstract function puntajeSimilitud ($objeto, $otro);
 
 }

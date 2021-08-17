@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Engine\MotorRecomendacionUsers;
+use App\Engine\MotorRecomendacionPosteos;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +61,13 @@ Route::get('/dashboard', function () {
     Route::post('/suscripcion/id={id}', 'SuscripcionController@actualizarEstado')->name('actualizarSuscripcion');
 
 
+// RUTAS RELATIVAS A RECOMENDACIONES
+
+    Route::get('/usuarios-sugeridos', 'RecomendacionController@verRecomendacionesUsuarios')
+        ->name('recomendacionesUsuarios');
+
+    Route::get('/posteos-sugeridos', 'RecomendacionController@verRecomendacionesPosteos')
+        ->name('recomendacionesPosteos');
 
 
 require __DIR__.'/auth.php';

@@ -24,13 +24,24 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('verUsuario')" style="text-decoration: none">
+                    <x-nav-link :href="route('recomendacionesPosteos')" :active="request()->routeIs('recomendacionesPosteos')" style="text-decoration: none">
                         <span class="material-icons">
                             recommend
                         </span>
                         &nbsp;
                         <b>
-                            Sugerencias
+                            Posteos recomendados
+                        </b>
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('recomendacionesUsuarios')" :active="request()->routeIs('recomendacionesUsuarios')" style="text-decoration: none">
+                        <span class="material-icons">
+                            supervisor_account
+                        </span>
+                        &nbsp;
+                        <b>
+                            Usuarios recomendados
                         </b>
                     </x-nav-link>
                 </div>
@@ -41,7 +52,7 @@
                         </span>
                         &nbsp;
                         <b>
-                            Tópicos del foro
+                            Tópicos
                         </b>
                     </x-nav-link>
                 </div>
@@ -120,10 +131,50 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden md:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                <div class="d-flex justify-content-start">
+                    <span class="material-icons">
+                        public
+                    </span>
+                    &nbsp;
+                    {{ __('Inicio') }}
+                </div>
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('recomendacionesPosteos')" :active="request()->routeIs('recomendacionesPosteos')">
+                <div class="d-flex justify-content-start">
+                    <span class="material-icons">
+                        recommend
+                    </span>
+                    &nbsp;
+                    {{ __('Posteos recomendados') }}
+                </div>
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('recomendacionesUsuarios')" :active="request()->routeIs('recomendacionesUsuarios')">
+                <div class="d-flex justify-content-start">
+                    <span class="material-icons">
+                        supervisor_account
+                    </span>
+                    &nbsp;
+                    {{ __('Usuarios recomendados') }}
+                </div>
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('mostrarTopicos')" :active="request()->routeIs('mostrarTopicos')">
+                <div class="d-flex justify-content-start">
+                    <span class="material-icons">
+                        menu_book
+                    </span>
+                    &nbsp;
+                    {{ __('Tópicos') }}
+                </div>
+
             </x-responsive-nav-link>
         </div>
 
@@ -137,20 +188,31 @@
                 </div>
 
                 <div class="ml-3">
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-gray-800">
+                        <strong>
+                            {{ Auth::user()->alias }}
+                        </strong>
+                    </div>
                 </div>
             </div>
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
+                <form method="GET" action="{{ route('verUsuario', ['alias' => Auth::user()->alias]) }}">
+                    @csrf
+                    <x-responsive-nav-link
+                            :href="route('verUsuario', ['alias' => Auth::user()->alias])"
+                            onclick="event.preventDefault(); this.closest('form').submit();"
+                    >
+                        {{ __('Perfil') }}
+                    </x-responsive-nav-link>
+                </form>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log out') }}
+                        {{ __('Salir') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
