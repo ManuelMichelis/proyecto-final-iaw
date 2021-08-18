@@ -6,13 +6,15 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                    <a class="text-dark" href="{{ route('dashboard') }}" style="text-decoration: none">
+                        <div class="logo-font" style="font-size: 2rem">
+                            {{ config('app.name') }}
+                        </div>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" style="text-decoration: none">
                         <span class="material-icons">
                             public
@@ -23,29 +25,18 @@
                         </b>
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('recomendacionesPosteos')" :active="request()->routeIs('recomendacionesPosteos')" style="text-decoration: none">
+                <div class="hidden sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('contenidoPersonalizado')" :active="request()->routeIs('contenidoPersonalizado')" style="text-decoration: none">
                         <span class="material-icons">
-                            recommend
+                            auto_fix_high
                         </span>
                         &nbsp;
                         <b>
-                            Posteos recomendados
+                            Contenido personalizado
                         </b>
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('recomendacionesUsuarios')" :active="request()->routeIs('recomendacionesUsuarios')" style="text-decoration: none">
-                        <span class="material-icons">
-                            supervisor_account
-                        </span>
-                        &nbsp;
-                        <b>
-                            Usuarios recomendados
-                        </b>
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('mostrarTopicos')" :active="request()->routeIs('mostrarTopicos')" style="text-decoration: none">
                         <span class="material-icons">
                             menu_book
@@ -144,24 +135,13 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('recomendacionesPosteos')" :active="request()->routeIs('recomendacionesPosteos')">
+            <x-responsive-nav-link :href="route('contenidoPersonalizado')" :active="request()->routeIs('contenidoPersonalizado')">
                 <div class="d-flex justify-content-start">
                     <span class="material-icons">
-                        recommend
+                        auto_fix_high
                     </span>
                     &nbsp;
-                    {{ __('Posteos recomendados') }}
-                </div>
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('recomendacionesUsuarios')" :active="request()->routeIs('recomendacionesUsuarios')">
-                <div class="d-flex justify-content-start">
-                    <span class="material-icons">
-                        supervisor_account
-                    </span>
-                    &nbsp;
-                    {{ __('Usuarios recomendados') }}
+                    {{ __('Contenido personalizado') }}
                 </div>
             </x-responsive-nav-link>
         </div>

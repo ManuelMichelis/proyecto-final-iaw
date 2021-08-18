@@ -61,6 +61,14 @@ Route::get('/dashboard', function () {
     Route::post('/suscripcion/id={id}', 'SuscripcionController@actualizarEstado')->name('actualizarSuscripcion');
 
 
+// RUTAS RELATIVAS A CONTENIDO PERSONALIZADO
+
+    Route::get('/contenido-personalizado', function() {
+        return view('contenido-personalizado');
+    })->name('contenidoPersonalizado');
+
+
+
 // RUTAS RELATIVAS A RECOMENDACIONES
 
     Route::get('/usuarios-recomendados', 'RecomendacionUserController@verRecomendaciones')

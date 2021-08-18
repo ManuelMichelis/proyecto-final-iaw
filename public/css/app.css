@@ -11,6 +11,7 @@ Document
 Use a better box model (opinionated).
 */
 @import url('http://fonts.cdnfonts.com/css/karu');
+@import url('http://fonts.cdnfonts.com/css/reklame-script');
 
 *,
 *::before,
@@ -49,6 +50,11 @@ Remove the margin in all browsers.
 
 body {
   margin: 0;
+}
+
+
+.logo-font {
+    font-family: 'Reklame Script Regular DEMO', sans-serif !important;
 }
 
 /**

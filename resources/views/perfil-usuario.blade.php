@@ -91,7 +91,7 @@
                     <div></div>
                     <div class="mt-4">
                         <b>
-                            {{ count($usuario->discusionesOriginadas()) }}
+                            {{ count($usuario->discusionesGeneradas()) }}
                             posteos realizados
                         </b>
                     </div>

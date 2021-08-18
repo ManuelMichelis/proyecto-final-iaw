@@ -2,8 +2,8 @@
 
     <div class="p-2" style="font-size: 0.92rem">
         {{ $posteo->created_at->format('H:i') }}
-        &nbsp;
-        {{ $posteo->created_at->format('d F Y') }}
+        &nbsp; <b>·</b> &nbsp;
+        {{ $posteo->created_at->format('d/m/Y') }}
     </div>
 
     <x-borderline/>
