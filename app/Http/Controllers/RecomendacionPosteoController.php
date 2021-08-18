@@ -67,7 +67,8 @@ class RecomendacionPosteoController extends Controller
         $recomendaciones =
             RecomendacionPosteo::where('id_usuario', $miUsuario->id)
                 ->orderBy('valor_recomendacion', 'desc')
-                ->limit(10);
+                ->limit(10)
+                ->get();
 
         // Por cada recomendacion que surgio, recupero el posteo
         $posteosRecomendados = new Collection();
