@@ -63,10 +63,10 @@ Route::get('/dashboard', function () {
 
 // RUTAS RELATIVAS A RECOMENDACIONES
 
-    Route::get('/usuarios-sugeridos', 'RecomendacionController@verRecomendacionesUsuarios')
+    Route::get('/usuarios-recomendados', 'RecomendacionUserController@verRecomendaciones')
         ->name('recomendacionesUsuarios');
 
-    Route::get('/posteos-sugeridos', 'RecomendacionController@verRecomendacionesPosteos')
+    Route::get('/posteos-recomendados', 'RecomendacionPosteoController@verRecomendaciones')
         ->name('recomendacionesPosteos');
 
 
