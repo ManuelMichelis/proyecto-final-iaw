@@ -109,8 +109,8 @@ function requestActualizarSeguimiento (id, csrfToken, route)
         success: function(response)
         {
             // Recupero componentes asociados al boton de seguimiento y al contenedor del nro de seguidores
-            let btnSeguimiento = document.getElementById('btn_seguimiento');
-            let contSeguidores = document.getElementById('contenedor_seguidores');
+            let btnSeguimiento = document.getElementById('btn_seguimiento_' + id);
+            let contSeguidores = document.getElementById('contenedor_seguidores_' + id);
             let nuevoSeguido = response.data.nuevo_seguido;
             let cantSeguidores = response.data.cant_seguidores_usuario;
             let claseVieja;

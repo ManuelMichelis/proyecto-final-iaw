@@ -44,7 +44,7 @@
                     <div class="d-flex justify-content-center">
                         @if (Auth::user()->sigue($usuario))
                             <button
-                                id="btn_seguimiento"
+                                id="btn_seguimiento_{{ $usuario->id }}"
                                 class="btn estado-siguiendo"
                                 onclick="requestActualizarSeguimiento(
                                         {{ $usuario->id }},
@@ -55,7 +55,7 @@
                             </button>
                         @else
                             <button
-                                id="btn_seguimiento"
+                                id="btn_seguimiento_{{ $usuario->id }}"
                                 class="btn estado-sin-seguir"
                                 onclick="requestActualizarSeguimiento(
                                         {{ $usuario->id }},
@@ -70,7 +70,7 @@
                 <div class="text-center" style="font-size: 1.1rem">
                     <div class="mt-4">
                         <div class="d-flex justify-content-center">
-                            <div id="contenedor_seguidores">
+                            <div id="contenedor_seguidores_{{ $usuario->id }}">
                                 <b>
                                     {{ count($usuario->seguidores) }}
                                 </b>
