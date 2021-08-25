@@ -13,6 +13,41 @@
 
             <div class="p-1">
                 <div class="ml-2">
+
+                    <a class="btn"
+                        data-toggle="modal"
+                        data-target="#modal-nuevo-comentario"
+                    >
+                        <div class="d-flex align-content-center">
+                            @if ($posteo->haComentado(Auth::user()))
+                                <b>
+                                    <div id="btn-com-skin-{{ $posteo->id }}" class="d-flex">
+                                        <span class="material-icons">
+                                            chat_bubble
+                                        </span>
+                                        &nbsp;
+                                        <div id="comentarios_posteo_{{ $posteo->id }}">
+                                            {{ count($posteo->comentarios) }}
+                                            comentarios
+                                        </div>
+                                    </div>
+                                </b>
+                            @else
+                                <div id="btn-com-skin-{{ $posteo->id }}" class="d-flex">
+                                    <span class="material-icons">
+                                        chat_bubble
+                                    </span>
+                                    &nbsp;
+                                    <div id="comentarios_posteo_{{ $posteo->id }}">
+                                        {{ count($posteo->comentarios) }}
+                                        comentarios
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </a>
+
+
                     <a class="btn"
                             onclick="requestVotar(
                                             {{ $posteo->id }},

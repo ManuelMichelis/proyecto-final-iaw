@@ -3,21 +3,7 @@
     <x-slot name="header">
     </x-slot>
 
-    <style>
-
-        .estado-suscripto {
-            color: #fff;
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .estado-sin-suscripcion {
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/estilos-topico.css') }}">
 
     <div class="m-5">
         <div class="container">
@@ -28,7 +14,7 @@
                             <div class="card mb-4">
                                 <div class="m-2">
                                     <div class="d-flex justify-content-center">
-                                        <img src="{{'data:image/png;base64, '.$topico->icono}}">
+                                        <img src="{{'data:image/png;base64, '.$topico->icono}}" width="96px">
                                     </div>
                                 </div>
                                 <div class="card-body text-center">

@@ -8,7 +8,12 @@
     <div class="m-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <button type="button" class="btn btn-dark roundbtn" data-toggle="modal" data-target="#modal-nuevo-comentario">
+            <button
+                type="button"
+                class="roundbtn"
+                data-toggle="modal"
+                data-target="#modal-nuevo-comentario"
+            >
                 <div class="d-flex justify-content-center">
                     <span class="material-icons">
                         textsms
@@ -22,11 +27,16 @@
             <!-- Tarjeta del posteo que inicia la discusion -->
             @include('components/posteo/posteo-dedicado', ['posteo' => $posteo])
 
-            <!-- Comentarios que posee la discusion -->
-            @foreach ($comentarios as $comentario)
-                @include('components/posteo/comentario-posteo', ['posteo' => $comentario])
-            @endforeach
+            <br>
+            <x-borderline/>
+            <br>
 
+            <!-- Comentarios que posee la discusion -->
+            <div class="m-2">
+                @foreach ($comentarios as $comentario)
+                    @include('components/posteo/comentario-posteo', ['posteo' => $comentario])
+                @endforeach
+            </div>
         </div>
     </div>
 

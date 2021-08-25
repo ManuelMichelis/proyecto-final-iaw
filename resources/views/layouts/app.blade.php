@@ -28,8 +28,8 @@
             <div class="fixed-top full-width">
                 @include('layouts.navigation')
                 <!-- Page Heading -->
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white shadow" style="padding-left: 6.7wh">
+                    <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
@@ -38,7 +38,6 @@
             <main class="main-body">
                 {{ $slot }}
             </main>
-
         </div>
     </body>
 </html>

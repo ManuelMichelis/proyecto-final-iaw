@@ -9,13 +9,12 @@ class PerfilController extends Controller
 {
 
     /**
-     * Muestra la vista del perfil del usuario, si existe, cuyo alias
-     * es dado como argumento
+     * Muestra la vista del perfil del usuario con alias dado como argumento
      */
     public function ver ($alias)
     {
         $usuario = User::where('alias', $alias)->first();
-        $posteos = $usuario->posteos()->orderByDesc('id')->get();
+        $posteos = $usuario->posteos()->where('id_referido', null)->orderByDesc('id')->get();
         if ($usuario != null)
         {
             return view('perfil-usuario')

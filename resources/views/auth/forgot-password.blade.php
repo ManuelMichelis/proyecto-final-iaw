@@ -1,8 +1,10 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+            <a class="text-dark" href="/" style="text-decoration: none">
+                <div class="logo-font" style="font-size: 3rem">
+                    {{ config('app.name') }}
+                </div>
             </a>
         </x-slot>
 

@@ -25,7 +25,7 @@
                         </b>
                     </x-nav-link>
                 </div>
-                <div class="hidden sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('contenidoPersonalizado')" :active="request()->routeIs('contenidoPersonalizado')" style="text-decoration: none">
                         <span class="material-icons">
                             auto_fix_high
@@ -36,7 +36,7 @@
                         </b>
                     </x-nav-link>
                 </div>
-                <div class="hidden sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('mostrarTopicos')" :active="request()->routeIs('mostrarTopicos')" style="text-decoration: none">
                         <span class="material-icons">
                             menu_book

@@ -30,7 +30,7 @@
                                     <div class="p-2">
                                         <div class="d-flex justify-content-start">
                                             <div class="d-flex">
-                                                <span class="material-icons" style="font-size: 100px">
+                                                <span class="material-icons" style="font-size: 6rem">
                                                     account_circle
                                                 </span>
                                             </div>
@@ -93,7 +93,7 @@
         @else
             <div class="p-5">
                 <div class="d-flex justify-content-center">
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert alert-secondary" role="alert">
                         <b>¡Ups!</b> No hay nuevos usuarios para recomendarte.
                         ¡Seguí interactuando con <b>Argument</b> para que conozca mejor tus gustos!
                     </div>

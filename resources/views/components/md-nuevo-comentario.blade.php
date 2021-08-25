@@ -21,11 +21,13 @@
                         type="text"
                         name="contenido"
                         class="form-control"
-                        placeholder="Brindá una opinión acerca del tema en discusión" rows="3"></textarea>
+                        placeholder="Brindá una opinión acerca del tema en discusión" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-dark" value="Publicar">
+                    <x-button>
+                        ¡Publicar!
+                    </x-button>
                 </div>
             </div>
         </div>

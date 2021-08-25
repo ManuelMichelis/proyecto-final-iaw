@@ -9,7 +9,6 @@ use App;
 abstract class RecomendacionController extends Controller
 {
 
-
     /**
      * Determina si corresponde solicitar nuevas recomendaciones al
      * motor de recomendacion correspondiente

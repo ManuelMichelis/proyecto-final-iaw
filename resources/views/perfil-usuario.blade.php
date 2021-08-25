@@ -17,10 +17,13 @@
     </style>
 
     <x-slot name="header">
+        <div class="py-3">
+
+        </div>
     </x-slot>
 
-    <div class="container-fluid" style="padding: 0px">
-        <div style="border-top: 1px solid grey; border-bottom: 1px solid grey; background-color: #e8e8e8; height: 30vh">
+    <div class="container-fluid">
+        <div style="border-bottom: 1px solid rgb(202, 202, 202); background-color: #f0f0f0; height: 30vh">
             <div class="d-flex justify-content-center">
                 <div class="flex-column">
                     <div class="d-flex">

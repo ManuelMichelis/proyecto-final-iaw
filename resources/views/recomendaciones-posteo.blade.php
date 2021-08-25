@@ -13,7 +13,7 @@
                 <div class="m-5">
                     <div class="p-5">
                         <div class="d-flex justify-content-center">
-                            <div class="alert alert-info" role="alert">
+                            <div class="alert alert-secondary" role="alert">
                                 <b>¡Ups!</b> No hay nuevos posteos para recomendarte.
                                 ¡Seguí interactuando con <b>Argument</b> para que conozca mejor tus gustos!
                             </div>

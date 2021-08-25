@@ -10,7 +10,7 @@
                             {{ $posteo->contenido }}
                         </div>
                     </div>
-                    @include('components/posteo/elementos/footer-dedicado', $posteo)
+                    @include('components/posteo/elementos/footer-comentario', $posteo)
                 </div>
             </div>
         </div>

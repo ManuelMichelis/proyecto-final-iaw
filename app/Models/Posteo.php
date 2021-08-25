@@ -114,12 +114,24 @@ class Posteo extends Model
 
 
     /**
-     * Retorna 'true' si el posteo corresponde a un comentario
+     * Retorna 'true' si el posteo corresponde a un comentario,
      * y 'false' en caso contrario
      */
     public function esComentario ()
     {
         return $this->id_referido != null;
+    }
+
+
+    /**
+     * Retorna 'true' si el posteo ha sido comentado por un usuario
+     * dado como argumento, y 'false' en caso contrario
+     */
+    public function haComentado (User $user)
+    {
+        $idUsuario = $user->id;
+        $comentario = $this->comentarios->where('id_usuario', $idUsuario)->first();
+        return $comentario != null;
     }
 
 
