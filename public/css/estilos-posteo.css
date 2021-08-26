@@ -8,18 +8,9 @@
         color: #ac2e2e
     }
 
-    .estado-no-comentado {
-        color: #222222
-    }
-
-    .estado-comentado {
-        color: #6ea150
-    }
-
     .label-topico {
         color: dimgray
     }
-
 
 
     button:focus {

@@ -58,6 +58,29 @@ body {
     color: #5C6BC0;
 }
 
+.label-login {
+    font-size: 1.1rem;
+    text-decoration: none;    
+}
+
+.label-login:hover {
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: #222222;
+}
+
+.label-alias {
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: #222222;
+}
+
+.label-alias:hover {
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: #3F51B5;
+}
+
 /**
 Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3)
 */

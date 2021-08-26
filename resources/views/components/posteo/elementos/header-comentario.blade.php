@@ -1,10 +1,11 @@
 <div class="d-flex justify-content-between">
-    <div class="d-flex justify-content-start" style="font-size: 1.1rem">
+    <div class="d-flex justify-content-start">
+
         <span class="material-icons">
             account_circle
         </span>
         &nbsp;
-        <a class="text-dark" href="{{ route('verUsuario', $posteo->aliasUsuario()) }}">
+        <a class="label-alias" href="{{ route('verUsuario', $posteo->aliasUsuario()) }}">
             <b>
                 {{ $posteo->aliasUsuario() }}
             </b>

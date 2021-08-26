@@ -16,17 +16,17 @@
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-md text-indigo-400">
-                            INICIO
+                            Inicio
                         </a>
                     @else
                         <a href="{{ route('login') }}" class="ml-4 text-md text-indigo-400">
-                            INGRESAR
+                            Ingresar
                         </a>
                         &nbsp;
                         &nbsp;
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 text-md text-indigo-400">
-                                REGISTRARSE
+                                Registrarse
                             </a>
                         @endif
                     @endauth

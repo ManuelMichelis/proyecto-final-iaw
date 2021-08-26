@@ -4,7 +4,7 @@
                 account_circle
             </span>
             &nbsp;
-            <a class="text-dark" href="{{ route('verUsuario', $posteo->aliasUsuario()) }}">
+            <a class="label-alias" href="{{ route('verUsuario', $posteo->aliasUsuario()) }}">
                 <b>
                     {{ $posteo->aliasUsuario() }}
                 </b>
