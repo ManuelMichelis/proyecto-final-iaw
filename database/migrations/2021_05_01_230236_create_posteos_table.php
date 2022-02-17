@@ -17,7 +17,8 @@ class CreatePosteosTable extends Migration
             $table->bigIncrements('id');
             $table->string('titulo')->nullable();
             $table->string('contenido')->nullable(false);
-            $table->unsignedInteger('votos')->default(0);
+            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('dislikes')->default(0);
             $table->unsignedInteger('id_topico_asociado')->nullable(false);
             $table->foreign('id_topico_asociado')->references('id')->on('topicos');
             $table->unsignedBigInteger('id_usuario');
@@ -35,6 +36,8 @@ class CreatePosteosTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('likes');
+        Schema::dropIfExists('dislikes');
         Schema::dropIfExists('posteos');
     }
 }

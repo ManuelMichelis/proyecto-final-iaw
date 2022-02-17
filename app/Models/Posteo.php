@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class Posteo extends Model
+use Recomendacion\Similitud\Similitud;
+class Posteo extends Model implements Recomendable
 {
     use HasFactory;
+
+    const PESO_TOPICOS_IGUALES = 0.25;
+    const PESO_LIKES_COMUNES_MIN = 0.5;
+    const PESO_LIKES_COMUNES_MAX = 0.7;
 
     /**
      * Atributos agregados
@@ -85,21 +89,22 @@ class Posteo extends Model
 
 
     /**
-     * Retorna el alias del usuario que publico el posteo
+     * Retorna una coleccion de modelos Usuario correspondiente
+     * a los usuarios que les gusta el posteo
      */
-    public function aliasUsuario ()
+    public function likers()
     {
-        return $this->usuario()->first()->alias;
+        return $this->belongsToMany(User::class, 'likes', 'id_posteo', 'id_usuario');
     }
 
 
     /**
      * Retorna una coleccion de modelos Usuario correspondiente
-     * a los votantes del posteo
+     * a los usuarios que no les gusta el posteo
      */
-    public function votantes ()
+    public function dislikers()
     {
-        return $this->belongsToMany(User::class, 'gustados', 'id_posteo', 'id_usuario');
+        return $this->belongsToMany(User::class, 'dislikes', 'id_posteo', 'id_usuario');
     }
 
 
@@ -109,63 +114,83 @@ class Posteo extends Model
      */
     public function sugeridos ()
     {
-        return $this->belongsToMany(User::class, 'posteos_recomendados', 'id_posteo', 'id_usuario');
+        return $this->belongsToMany(User::class, 'posteos_recomendados', 'id_recomendado', 'id_usuario');
     }
 
 
     /**
-     * Retorna 'true' si el posteo corresponde a un comentario,
-     * y 'false' en caso contrario
+     * Definición de recomendable para POSTEO
      */
-    public function esComentario ()
+    public function recomendable(User $usuario)
     {
-        return $this->id_referido != null;
+        return 
+            !$this->estaInteresado($usuario) 
+            && 
+            !$this->estaDesinteresado($usuario) 
+            && 
+            !$this->haComentado($usuario)
+            &&
+            !$usuario->haPublicado($this);
     }
 
 
     /**
-     * Retorna 'true' si el posteo ha sido comentado por un usuario
-     * dado como argumento, y 'false' en caso contrario
+     * Similitud entre dos entidades Posteo
      */
-    public function haComentado (User $user)
-    {
-        $idUsuario = $user->id;
-        $comentario = $this->comentarios->where('id_usuario', $idUsuario)->first();
-        return $comentario != null;
+    public static function similitud($likeado, $potencial)
+    {        
+        $likersLikeado = $likeado->idsOtrosInteresados();
+        $likersPotencial = $potencial->idsOtrosInteresados();
+        $topicoPosteo = $likeado->topico;
+        $topicoPotencial = $potencial->topico;
+        $pesoPorLike = self::PESO_LIKES_COMUNES_MIN;
+        $plusIgualTopico = 0;
+        // Si coinciden los topicos, considero sumar un valor fijo al puntaje
+        if ($topicoPosteo->id == $topicoPotencial->id)
+        {
+            $plusIgualTopico = self::PESO_TOPICOS_IGUALES;
+            $pesoPorLike = self::PESO_LIKES_COMUNES_MAX;
+        }
+        // Obtener arreglos de los ids de los posteos (no comentarios) que le gustaron a uno y a otro
+        $puntaje =
+            Similitud::jaccardSimple($likersLikeado, $likersPotencial) * $pesoPorLike
+            +
+            $plusIgualTopico;
+
+        return $puntaje;
     }
 
 
     /**
-     * Para un dado modelo de usuario, retorna 'true' si el usuario es votante del posteo
+     * Retorna el alias del usuario que publico el posteo
      */
-    public function esVotante (User $usuario)
+    public function aliasPublicador ()
     {
-        $esVotante = $this->votantes()->get()->contains($usuario);
-        return $esVotante;
+        return $this->usuario()->first()->alias;
     }
 
 
     /**
      * Retorna una coleccion de IDs de los usuarios a los que les
      * gusto el posteo, sin considerar a aquel usuario que lo
-     * publico
+     * publicó
      *
      * NOTA: no considerar un 'me gusta' del usuario que publico el
      * posteo, implica que el valor de este, para ser recomendado,
      * depende solo de la participacion de terceros
      */
-    public function idsOtrosVotantes ()
+    public function idsOtrosInteresados ()
     {
-        $idUsuarioPosteo = $this->id_usuario;
-        $votantes = $this->votantes;
+        $idPublicador = $this->id_usuario;
+        $likers = $this->likers;
         $coleccionIds = [];
-        foreach ($votantes as $usuario)
+        foreach ($likers as $usuario)
         {
-            $idVotante = $usuario->id;
+            $idInteresado = $usuario->id;
             // Si el usuario votante no coincide con el que publico el posteo, lo guardo
-            if ($idUsuarioPosteo != $idVotante)
+            if ($idPublicador != $idInteresado)
             {
-                array_push($coleccionIds, $idVotante);
+                array_push($coleccionIds, $idInteresado);
             }
         }
         return $coleccionIds;
@@ -195,6 +220,50 @@ class Posteo extends Model
             }
         }
         return $coleccionIds;
+    }
+
+
+    /**
+     * Para un dado modelo de usuario, retorna 'true' si al dado como
+     * argumento le gusta el posteo
+     */
+    public function estaInteresado (User $usuario)
+    {
+        $estaInteresado = $this->likers()->get()->contains($usuario);
+        return $estaInteresado;
+    }
+
+
+    /**
+     * Para un dado modelo de usuario, retorna 'true' si al dado como
+     * argumento no le gusta el posteo
+     */
+    public function estaDesinteresado (User $usuario)
+    {
+        $estaInteresado = $this->dislikers()->get()->contains($usuario);
+        return $estaInteresado;
+    }
+
+
+    /**
+     * Retorna 'true' si el posteo corresponde a un comentario,
+     * y 'false' en caso contrario
+     */
+    public function esComentario ()
+    {
+        return $this->id_referido != null;
+    }
+
+
+    /**
+     * Retorna 'true' si el posteo ha sido comentado por un usuario
+     * dado como argumento, y 'false' en caso contrario
+     */
+    public function haComentado (User $user)
+    {
+        $idUsuario = $user->id;
+        $comentario = $this->comentarios->where('id_usuario', $idUsuario)->first();
+        return $comentario != null;
     }
 
 }

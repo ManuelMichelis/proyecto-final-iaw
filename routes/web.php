@@ -43,7 +43,12 @@ Route::get('/dashboard', function ()
     /**
      * Actualizacion del estado de 'me gusta' para un determinado posteo
      */
-    Route::post('/gustar/id={id}','PosteoController@actualizarGustado')->name('actualizarGustado');
+    Route::post('/like/id={id}','PosteoController@actualizarLike')->name('actualizarLike');
+
+    /**
+     * Actualizacion del estado de 'no me gusta' para un determinado posteo
+     */
+    Route::post('/dislike/id={id}','PosteoController@actualizarDislike')->name('actualizarDislike');
 
     /**
      * Eliminacion de un determinado posteo
@@ -104,7 +109,7 @@ Route::get('/dashboard', function ()
     /**
      * Acceso a la lista de usuarios que Argument recomienda seguir
      */
-    Route::get('/usuarios-recomendados', 'RecomendacionUserController@verRecomendaciones')
+    Route::get('/usuarios-recomendados', 'RecomendacionPosteoController@verExposiciones')
         ->name('recomendacionesUsuarios');
 
     /**

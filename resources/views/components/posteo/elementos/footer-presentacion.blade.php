@@ -21,39 +21,81 @@
                     </div>
                 </a>
             </div>
+            <!-- BOTON DE 'ME GUSTA' -->
             <div class="p-1">
                 <div class="ml-2">
                     <a class="btn"
-                            onclick="requestVotar(
+                            onclick="actualizarLike(
                                             {{ $posteo->id }},
                                             '{{ csrf_token() }}',
-                                            '{{ route('actualizarGustado', ['id' => $posteo->id]) }}'
+                                            '{{ route('actualizarLike', ['id' => $posteo->id]) }}'
                             )"
                             type="submit">
 
                         <div class="d-flex align-content-center">
-                            @if ($posteo->esVotante(Auth::user()))
-                                <div id="btn-mg-skin-{{ $posteo->id }}" class="d-flex estado-gustado">
+                            @if ($posteo->estaInteresado(Auth::user()))
+                                <div id="btn-like-skin-{{ $posteo->id }}" class="d-flex like">
                                     <span class="material-icons">
-                                        favorite
+                                        thumb_up
                                     </span>
                                     &nbsp;
-                                    <div id="votos_posteo_{{ $posteo->id }}">
+                                    <div id="likes_posteo_{{ $posteo->id }}">
                                         <b>
-                                            {{ $posteo->votos }}
+                                            {{ $posteo->likes }}
                                             me gusta
                                         </b>
                                     </div>
                                 </div>
                             @else
-                                <div id="btn-mg-skin-{{ $posteo->id }}" class="d-flex estado-no-gustado">
+                                <div id="btn-like-skin-{{ $posteo->id }}" class="d-flex neutro">
                                     <span class="material-icons">
-                                        favorite
+                                        thumb_up
                                     </span>
                                     &nbsp;
-                                    <div id="votos_posteo_{{ $posteo->id }}">
-                                        {{ $posteo->votos }}
+                                    <div id="likes_posteo_{{ $posteo->id }}">
+                                        {{ $posteo->likes }}
                                         me gusta
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- BOTON DE 'NO ME GUSTA' -->
+            <div class="p-1">
+                <div class="ml-2">
+                    <a class="btn"
+                            onclick="actualizarDislike(
+                                            {{ $posteo->id }},
+                                            '{{ csrf_token() }}',
+                                            '{{ route('actualizarDislike', ['id' => $posteo->id]) }}'
+                            )"
+                            type="submit">
+
+                        <div class="d-flex align-content-center">
+                            @if ($posteo->estaDesinteresado(Auth::user()))
+                                <div id="btn-dislike-skin-{{ $posteo->id }}" class="d-flex dislike">
+                                    <span class="material-icons">
+                                        thumb_down_alt
+                                    </span>
+                                    &nbsp;
+                                    <div id="dislikes_posteo_{{ $posteo->id }}">
+                                        <b>
+                                            {{ $posteo->dislikes }}
+                                            no me gusta
+                                        </b>
+                                    </div>
+                                </div>
+                            @else
+                                <div id="btn-dislike-skin-{{ $posteo->id }}" class="d-flex neutro">
+                                    <span class="material-icons">
+                                        thumb_down_alt
+                                    </span>
+                                    &nbsp;
+                                    <div id="dislikes_posteo_{{ $posteo->id }}">
+                                        {{ $posteo->dislikes }}
+                                        no me gusta
                                     </div>
                                 </div>
                             @endif

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePosteosRecomendadosTable extends Migration
+class CreateDislikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreatePosteosRecomendadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('posteos_recomendados', function (Blueprint $table) {
+        Schema::create('dislikes', function (Blueprint $table) {
             $table->unsignedBigInteger('id_usuario');
-            $table->unsignedBigInteger('id_recomendado');
-            $table->unsignedFloat('valor');
-            $table->unique(["id_usuario", "id_recomendado"], 'usuario_posteo_recomendado_unique');
+            $table->unsignedBigInteger('id_posteo');
+            $table->unique(["id_usuario", "id_posteo"], 'dislike_usuario_posteo_unique');
             $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
-            $table->foreign('id_recomendado')->references('id')->on('posteos')->onDelete('cascade');
+            $table->foreign('id_posteo')->references('id')->on('posteos')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });
     }
@@ -31,6 +30,7 @@ class CreatePosteosRecomendadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posteos_recomendados');
+        //Schema::dropUnique('dislike_usuario_posteo_unique');
+        Schema::dropIfExists('dislikes');
     }
 }

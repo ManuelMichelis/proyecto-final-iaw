@@ -28,9 +28,19 @@
                 <i class="fas fa-pencil-alt fa-2x"></i>
                 &nbsp;
             </button>
-            @foreach ($posteos as $posteo)
-                @include('components/posteo/posteo-presentacion', $posteo)
-            @endforeach
+            @if (count($posteos) > 0)
+                @foreach ($posteos as $posteo)
+                    @include('components/posteo/posteo-presentacion', $posteo)
+                @endforeach                
+            @else
+                <div class="d-flex justify-content-center">
+                    <div class="d-flex align-content-center">
+                        <div style="font-size: 1.7rem; color: rgb(189, 183, 183)">
+                            Aún no hay posteos publicados ¡Sé el primero en abrir un thread!
+                        </div>
+                    </div>                    
+                </div>
+            @endif
         </div>
     </div>
 

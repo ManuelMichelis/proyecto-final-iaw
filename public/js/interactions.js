@@ -1,10 +1,14 @@
 
+const CLASE_NEUTRO = "neutro";
+const CLASE_LIKE = "like";
+const CLASE_DISLIKE = "dislike";
+
 
 /**
  * Realiza una solicitud via AJAX al servidor para actualizar el registro
  * del "me gusta" sobre el posteo con id dado como argumento.
  */
-function requestVotar (id, csrfToken, route)
+function actualizarLike (id, csrfToken, route)
 {
     // Preparo y realizo la solicitud HTTP via AJAX
     $.ajax({
@@ -18,26 +22,31 @@ function requestVotar (id, csrfToken, route)
         {
             'id': id,
         },
-        success: function(response){
-            // Recupero el componente asociado al boton y lo pinto, si se agreg
-            skinBtn = document.getElementById('btn-mg-skin-' + id);
-            componenteVotos = document.getElementById('votos_posteo_' + id);
-            let gustado = response.data.gustado;
-            let votos = response.data.votos;
+        success: function(response)
+        {
+            // Recupero el componente asociado al boton
+            let skinBtn = document.getElementById('btn-like-skin-' + id);
+            let componenteLike = document.getElementById('likes_posteo_' + id);
+            let likeActivado = response.data.activado;
+            let huboSwitch = response.data.switch;
             let claseVieja;
             let claseNueva;
             // Determino la clase CSS a eliminar y por agregar, ademas de actualizar los 'me gusta'
-            if (gustado)
+            if (likeActivado)
             {
-                claseVieja = 'estado-no-gustado';
-                claseNueva = 'estado-gustado';
-                componenteVotos.innerHTML = '<b>' + votos + ' me gusta </b>';
+                claseVieja = CLASE_NEUTRO;
+                claseNueva = CLASE_LIKE;
+                componenteLike.innerHTML = '<b>' + response.data.likes + ' me gusta </b>';
             }
             else
             {
-                claseVieja = 'estado-gustado';
-                claseNueva = 'estado-no-gustado';
-                componenteVotos.innerHTML = votos + ' me gusta';
+                claseVieja = CLASE_LIKE;
+                claseNueva = CLASE_NEUTRO;
+                componenteLike.innerHTML = response.data.likes + ' me gusta';
+            }
+            if (huboSwitch)
+            {
+                neutralizarBtnDislike(id,response.data.dislikes);
             }
             // Elimino la clase CSS vieja e incorporo la nueva, modificando el color del boton
             skinBtn.classList.remove(claseVieja);
@@ -54,9 +63,93 @@ function requestVotar (id, csrfToken, route)
 
 /**
  * Realiza una solicitud via AJAX al servidor para actualizar el registro
- * del "me gusta" sobre el posteo con id dado como argumento.
+ * del "no me gusta" sobre el posteo con id dado como argumento.
  */
-function requestEliminar (id, csrfToken, route)
+ function actualizarDislike (id, csrfToken, route)
+ {
+     // Preparo y realizo la solicitud HTTP via AJAX
+     $.ajax({
+         headers:
+         {
+             'X-CSRF-TOKEN': csrfToken,
+         },
+         method: 'POST',
+         url: route,
+         data:
+         {
+             'id': id,
+         },
+         success: function(response)
+         {
+             // Recupero el componente asociado al boton
+             let skinBtnDislike = document.getElementById('btn-dislike-skin-' + id);
+             let componenteDislike = document.getElementById('dislikes_posteo_' + id);
+             let dislikeActivado = response.data.activado;
+             let huboSwitch = response.data.switch;
+             let claseVieja;
+             let claseNueva;
+             // Determino la clase CSS a eliminar y por agregar, ademas de actualizar los 'me gusta'
+             if (dislikeActivado)
+             {
+                 claseVieja = CLASE_NEUTRO;
+                 claseNueva = CLASE_DISLIKE;
+                 componenteDislike.innerHTML = '<b>' + response.data.dislikes + ' no me gusta </b>';
+             }
+             else
+             {
+                 claseVieja = CLASE_DISLIKE;
+                 claseNueva = CLASE_NEUTRO;
+                 componenteDislike.innerHTML = response.data.dislikes + ' no me gusta';
+             }
+             if (huboSwitch)
+             {
+                neutralizarBtnLike(id,response.data.likes);
+             }
+             
+             // Elimino la clase CSS vieja e incorporo la nueva, modificando el color del boton
+             skinBtnDislike.classList.remove(claseVieja);
+             skinBtnDislike.classList.add(claseNueva);
+ 
+ 
+         },
+         error: function (response) {
+             console.log('¡ERROR AL ACTUALIZAR para posteo ' + id + '!');
+         }
+     });
+ }
+
+ /**
+  * Modifica el estilo y contenido del botón de 'me gusta' asociado
+  * a un posteo, quedando en estado neutro (no seleccionado)
+  */
+ function neutralizarBtnLike(id, likes)
+ {
+    let skinBtnLike = document.getElementById('btn-like-skin-' + id);
+    let componenteLike = document.getElementById('likes_posteo_' + id);
+    componenteLike.innerHTML = likes + ' me gusta';
+    skinBtnLike.classList.remove(CLASE_LIKE);
+    skinBtnLike.classList.add(CLASE_NEUTRO);
+ }
+
+ /**
+  * Modifica el estilo y contenido del botón de 'no me gusta' asociado
+  * a un posteo, quedando en estado neutro (no seleccionado)
+  */
+ function neutralizarBtnDislike(id, likes)
+ {
+    let skinBtnLike = document.getElementById('btn-dislike-skin-' + id);
+    let componenteLike = document.getElementById('dislikes_posteo_' + id);
+    componenteLike.innerHTML = likes + ' no me gusta';
+    skinBtnLike.classList.remove(CLASE_DISLIKE);
+    skinBtnLike.classList.add(CLASE_NEUTRO);
+ }
+
+
+/**
+ * Realiza una solicitud via AJAX al servidor para eliminar un
+ * posteo del usuario en sesión, con id dado como como argumento.
+ */
+function eliminarPosteo (id, csrfToken, route)
 {
     // Preparo y realizo la solicitud HTTP via AJAX
      $.ajax({
@@ -92,7 +185,7 @@ function requestEliminar (id, csrfToken, route)
  * @param {*} csrfToken: string asociado al token CSRF
  * @param {*} route: URL a la cual realizar la solicitud de actualizacion
  */
-function requestActualizarSeguimiento (id, csrfToken, route)
+function actualizarSeguimiento (id, csrfToken, route)
 {
     // Preparo y realizo la solicitud HTTP via AJAX
     $.ajax({

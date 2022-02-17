@@ -6,10 +6,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Recomendacion\Similitud\Similitud;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Recomendable
 {
     use HasFactory, Notifiable;
+
+    const PESO_SUSCRIPCIONES_COMUNES = 0.2;
+    const PESO_LIKES_COMENTARIOS_COMUNES = 0.75;
+
 
     /**
      * Atributos agregados manualmente
@@ -66,10 +71,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'seguimientos', 'id_seguido', 'id_seguidor');
     }
-    /**
-     * https://laracasts.com/discuss/channels/eloquent/laravel-eloquent-followers-relationship
-     * PARA CUANDO SE DEBA IMPLEMENTAR LA INSERCIÓN DE SEGUIDORES/SEGUIDOS
-     */
+    
 
     /**
      * Los tópicos a los cuales está suscrito el usuario
@@ -96,7 +98,17 @@ class User extends Authenticatable
      */
     public function usuariosRecomendados()
     {
-        return $this->belongsToMany(User::class, 'usuarios_recomendados', 'id_usuario', 'id_usuario_recomendado');
+        return $this->belongsToMany(User::class, 'usuarios_recomendados', 'id_usuario', 'id_recomendado');
+    }
+
+
+    /**
+     * Los posteos que le son recomendados actualmente al usuario
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posteosRecomendados()
+    {
+        return $this->belongsToMany(Posteo::class, 'posteos_recomendados', 'id_usuario', 'id_recomendado');
     }
 
 
@@ -107,17 +119,7 @@ class User extends Authenticatable
     public function sugeridos ()
     {
         return $this->belongsToMany(User::class, 'usuarios_recomendados', 'id_usuario_2', 'id_usuario_1');
-    }
-
-
-    /**
-     * Los posteos que le son recomendados actualmente al usuario
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function posteosRecomendados()
-    {
-        return $this->belongsToMany(Posteo::class, 'posteos_recomendados', 'id_usuario', 'id_posteo');
-    }
+    }    
 
 
     /**
@@ -133,14 +135,61 @@ class User extends Authenticatable
      * Los 'me gusta' que ha realizado el usuario sobre posteos
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function gustados()
+    public function likes()
     {
-        return $this->belongsToMany(Posteo::class, 'gustados', 'id_usuario', 'id_posteo');
+        return $this->belongsToMany(Posteo::class, 'likes', 'id_usuario', 'id_posteo');
     }
 
 
     /**
-     * Controla si un dado posteo fue publicado por el usuario en sesion
+     * Los 'no me gusta' que ha realizado el usuario sobre posteos
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dislikes()
+    {
+        return $this->belongsToMany(Posteo::class, 'dislikes', 'id_usuario', 'id_posteo');
+    }
+
+
+    /**
+     * Definición de recomendable de usuario a usuario
+     */
+    public function recomendable(User $target)
+    {
+        return $this->id != $target->id && !$target->sigue($this);
+    }
+
+
+    /**
+     * Similitud entre dos entidades User
+     */
+    public static function similitud($usuario, $usuarioComparado)
+    {
+        $topicosUsuario = $usuario->idsTopicosSuscriptos();
+        $likesUsuario = $usuario->idsThreadsLikeados();
+        $debatidosUsuario = $usuario->idsThreadsDebatidos();
+        $topicosComparado = $usuarioComparado->idsTopicosSuscriptos();
+        $likesComparado = $usuarioComparado->idsThreadsLikeados();
+        $debatidosComparado = $usuarioComparado->idsThreadsDebatidos();
+        $puntaje =
+            Similitud::jaccardComplejo(
+                $likesUsuario,
+                $likesComparado,
+                $debatidosUsuario,
+                $debatidosComparado
+            )*self::PESO_LIKES_COMENTARIOS_COMUNES
+            +
+            Similitud::jaccardSimple(
+                $topicosUsuario,
+                $topicosComparado
+            )*self::PESO_SUSCRIPCIONES_COMUNES;
+        return $puntaje;
+    }
+
+
+    /**
+     * Retorna 'true' si el usuario publicó un posteo dado como
+     * argumento
      */
     public function haPublicado (Posteo $posteo)
     {
@@ -161,10 +210,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Determina si el usuario esta suscripto al topico dado como
-     * argumento
+     * Retorna 'true' si el usuario esta suscripto al tópico,
+     * dado como argumento
      */
-    public function suscripto (Topico $topico)
+    public function suscripto(Topico $topico)
     {
         $id = $topico->id;
         $suscripcion = $this->suscripciones->where('id', $id)->first();
@@ -175,7 +224,7 @@ class User extends Authenticatable
     /**
      * Retorna la coleccion de posteos realizados por el usuario
      */
-    public function discusionesGeneradas ()
+    public function discusionesGeneradas()
     {
         return $this->posteos->where('titulo','!=', null);
     }
@@ -189,14 +238,41 @@ class User extends Authenticatable
      * el valor de un posteo, para ser recomendado, depende solo de
      * la participacion de terceros en la discusion
      */
-    public function idsExposicionesGustadas ()
+    public function idsThreadsLikeados()
     {
         $miId = $this->id;
-        $gustados = $this->gustados;
+        $likes = $this->likes;
         $coleccionIds = [];
-        foreach ($gustados as $meGusta)
+        foreach ($likes as $like)
         {
-            $idPosteo = $meGusta->id;
+            $idPosteo = $like->id;
+            $posteo = Posteo::where('id', $idPosteo)->first();
+            // Si el posteo no es un comentario, tiene mi 'me gusta' y no es mio, considero su ID
+            if (!$posteo->esComentario() && $posteo->id_usuario != $miId)
+            {
+                array_push($coleccionIds, $idPosteo);
+            }
+        }
+        return $coleccionIds;
+    }
+
+
+    /**
+     * Retorna una coleccion de IDs de los posteos que gustaron al
+     * usuario y no fueron publicados por el
+     *
+     * NOTA: no considerar posteos publicados por el, implica que
+     * el valor de un posteo, para ser recomendado, depende solo de
+     * la participacion de terceros en la discusion
+     */
+    public function idsThreadsDislikeados()
+    {
+        $miId = $this->id;
+        $dislikes = $this->dislikes;
+        $coleccionIds = [];
+        foreach ($dislikes as $dislike)
+        {
+            $idPosteo = $dislike->id;
             $posteo = Posteo::where('id', $idPosteo)->first();
             // Si el posteo no es un comentario, tiene mi 'me gusta' y no es mio, considero su ID
             if (!$posteo->esComentario() && $posteo->id_usuario != $miId)
@@ -216,7 +292,7 @@ class User extends Authenticatable
      * el valor de un posteo, para ser recomendado, depende solo de
      * la participacion de terceros en la discusion
      */
-    public function idsExposicionesDebatidas ()
+    public function idsThreadsDebatidos()
     {
         $miId = $this->id;
         $coleccionIds = [];
@@ -237,10 +313,39 @@ class User extends Authenticatable
 
 
     /**
+     * Retorna una colección con aquellos posteos que no publicó
+     * el usuario y para los cuales no ha dado 'me gusta', 
+     * 'no me gusta' ni ha comentado
+     */
+    public function posteosSinParticipacion()
+    {
+                        // Descarto los threads del usuario
+        $posteos = Posteo::where('id_usuario','!=',$this->id)
+                        // Descarto los comentarios
+                        ->where('id_referido', null)
+                        // Descarto posteos que ya le gustan al usuario
+                        ->whereNotIn(
+                            'id',
+                            $this->likes->pluck('id')
+                        )
+                        // Descarto posteos que no le gustan al usuario
+                        ->whereNotIn(
+                            'id',
+                            $this->dislikes->pluck('id')
+                        )
+                        // Posteos que se discutieron (comentaron)
+                        ->whereNotIn('id_referido', $this->idsThreadsDebatidos())                        
+                        ->get();
+        return $posteos;
+        
+    }
+
+
+    /**
      * Retorna una coleccion de IDs de los topicos a los cuales
      * el usuario esta suscripto
      */
-    public function idsTopicosSuscriptos ()
+    public function idsTopicosSuscriptos()
     {
         $coleccionIds = [];
         $topicos = $this->suscripciones;
@@ -249,6 +354,17 @@ class User extends Authenticatable
             array_push($coleccionIds, $topico->id);
         }
         return $coleccionIds;
+    }
+
+
+    /**
+     * Retorna la entidad de recomendación para el usuario, si existe,
+     * asociada
+     * al posteo con id dado como argumento
+     */
+    public function obtenerPosteoRecomendado($id)
+    {
+        return $this->posteosRecomendados->where('id_recomendado',$id)->first();
     }
 
 }

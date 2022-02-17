@@ -55,37 +55,112 @@ class PosteoController extends Controller
 
 
     /**
-     * Actualiza el 'gustado' de un posteo con ID dado como argumento
+     * Actualiza el 'me gusta' de un posteo con ID dado como argumento
      * para el usuario en sesion
      */
-    public function actualizarGustado ($id)
+    public function actualizarLike ($id)
     {
         // Asumo que no existe el 'me gusta'. Esto es, debo registrarlo
-        $estado = null;
+        $activado = null;
+        $switch = null;
         $posteo = Posteo::where('id',$id)->first();
         // Si el posteo existe, procedo
         if ($posteo != null)
         {
             $usuario = Auth::user();
-            $votantesPosteo = $posteo->votantes();
-            $gustado = $votantesPosteo->where('id',$usuario->id)->first();
-            $cantidadGustados = $posteo->votos;
+            $likers = $posteo->likers();
+            $like = $likers->where('id',$usuario->id)->first();
+            $cantidadLikes = $posteo->likes;
+            $cantidadDislikes = $posteo->dislikes;
             // Si no existe el 'me gusta', lo registro
-            if ($gustado == null)
+            if ($like == null)
             {
-                $posteo->votos = $cantidadGustados + 1;
-                $posteo->votantes()->save($usuario);
-                $estado = true;
+                // Si está 'no me gusta', lo quito antes de registrar el 'me gusta'
+                $dislike = $posteo->dislikers->where('id',$usuario->id)->first();
+                if ($dislike != null)
+                {
+                    $switch = true;
+                    $posteo->dislikers()->detach($usuario);
+                    $posteo->dislikes = $cantidadDislikes - 1;
+                }
+                else 
+                {
+                    $switch = false;
+                }
+                $posteo->likes = $cantidadLikes + 1;
+                $posteo->likers()->save($usuario);
+                $activado = true;
             }
-            // Si ya existe el me gusta, lo quito
+            // Si ya existe el 'me gusta', debo quitarlo
             else {
-                $posteo->votos = $cantidadGustados - 1;
-                $posteo->votantes()->detach($usuario);
-                $estado = false;
+                $posteo->likes = $cantidadLikes - 1;
+                $posteo->likers()->detach($usuario);
+                $activado = false;
             }
             $posteo->save();
         }
-        return response()->json(['status' => 200, 'data' => ['gustado' => $estado, 'votos' => $posteo->votos]]);
+        $info = [
+            "activado" => $activado,
+            "switch" => $switch,
+            "likes" => $posteo->likes,
+            "dislikes" => $posteo->dislikes
+        ];
+        return response()->json(['status' => 200, 'data' => $info]);
+    }
+
+
+    /**
+     * Actualiza el 'me gusta' de un posteo con ID dado como argumento
+     * para el usuario en sesion
+     */
+    public function actualizarDislike ($id)
+    {
+        // Asumo que no existe el 'me gusta'. Esto es, debo registrarlo
+        $activado = null;
+        $switch = null;
+        $posteo = Posteo::where('id',$id)->first();
+        // Si el posteo existe, procedo
+        if ($posteo != null)
+        {
+            $usuario = Auth::user();
+            $dislikers = $posteo->dislikers();
+            $dislike = $dislikers->where('id',$usuario->id)->first();
+            $cantidadDislikes = $posteo->dislikes;
+            $cantidadLikes = $posteo->likes;            
+            // Si no existe el 'no me gusta', lo registro
+            if ($dislike == null)
+            {
+                // Si está 'me gusta', lo quito antes de registrar el 'no me gusta'
+                $like = $posteo->likers->where('id',$usuario->id)->first();
+                if ($like != null)
+                {
+                    $switch = true;
+                    $posteo->likers()->detach($usuario);
+                    $posteo->likes = $cantidadLikes - 1;
+                }
+                else
+                {
+                    $switch = false;
+                }
+                $posteo->dislikes = $cantidadDislikes + 1;
+                $posteo->dislikers()->save($usuario);
+                $activado = true;
+            }
+            // Si ya existe el 'me gusta', debo quitarlo
+            else {
+                $posteo->dislikes = $cantidadDislikes - 1;
+                $posteo->dislikers()->detach($usuario);
+                $activado = false;
+            }
+            $posteo->save();
+        }
+        $info = [
+            "activado" => $activado,
+            "switch" => $switch,
+            "likes" => $posteo->likes,
+            "dislikes" => $posteo->dislikes
+        ];
+        return response()->json(['status' => 200, 'data' => $info]);
     }
 
 

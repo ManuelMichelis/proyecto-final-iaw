@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Recomendacion\Engine\MotorRecomendacion;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Engine\MotorRecomendacionUsers;
 
 
-class RecomendacionUserController extends Controller
+class RecomendacionUserController extends RecomendacionController
 {
 
     /**
@@ -30,7 +29,7 @@ class RecomendacionUserController extends Controller
     public function verRecomendaciones ()
     {
         $requiereNuevas = true;
-        $miUsuario = Auth::user();
+        $target = User::where('id',Auth::user()->id)->first();
         if ($requiereNuevas)
         {
             // Obtengo los usuarios que no sigo
@@ -38,18 +37,33 @@ class RecomendacionUserController extends Controller
                                     ->filter(
                                         function($us)
                                         {
-                                            $miUsuario = Auth::user();
-                                            $esSeguidor = $miUsuario->sigue($us);
-                                            return !$esSeguidor;
+                                            $target = User::where('id',Auth::user()->id)->first();
+                                            return $us->recomendable($target);
                                         }
                                     )
-                                    ->where('id', '!=', $miUsuario->id);
+                                    ->where('id', '!=', $target->id);
             // Creo el motor de recomendaciones y le solicito sugerencias
-            $motor = new MotorRecomendacionUsers($miUsuario, $usuariosNoSeguidos);
+            $items = ["potenciales" => $usuariosNoSeguidos];
+            $motor = MotorRecomendacion::get();
+            $motor->setModoUsers($target,$items);
             $motor->generarRecomendaciones();
         }
-        $usuariosRecomendados = $miUsuario->usuariosRecomendados;
+        $usuariosRecomendados = $target->usuariosRecomendados;
         return view('./recomendaciones-usuario')->with('usuarios', $usuariosRecomendados);
+    }
+
+
+    public function verExposiciones()
+    {
+        $target = User::where('id',Auth::user()->id)->first();
+        // Obtengo el conjunto de entrenamiento: forma (usuario_seguido, estado_seguimiento)
+        $seguidos = $target->seguidos;
+        $conjunto_entrenamiento = [];
+        foreach ($seguidos as $seguido)
+        {
+            //array_push($conjunto_entrenamiento,["item" => $seguido, "prediccion" => ]
+        }
+
     }
 
 }

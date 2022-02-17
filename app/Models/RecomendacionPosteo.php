@@ -23,8 +23,19 @@ class RecomendacionPosteo extends Model
      * @var array
      */
     protected $fillable = [
-        'valor_recomendacion',
+        'valor',
     ];
+
+
+    public static function obtener ($id_target, $id_posteo)
+    {
+        $recomendacion = RecomendacionPosteo::all()
+                            ->where('id_usuario',$id_target)
+                            ->where('id_recomendado',$id_posteo)
+                            ->first();
+        return $recomendacion;
+
+    }
 
 
 }

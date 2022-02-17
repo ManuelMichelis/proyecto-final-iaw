@@ -1,6 +1,6 @@
 <?php
 
-namespace Engine\Similitud;
+namespace Recomendacion\Similitud;
 
 class Similitud
 {
@@ -23,7 +23,7 @@ class Similitud
         $cantIntersec = count($interseccion);
         $union = array_unique(array_merge($conjuntoA, $conjuntoB));
         $cantUnion = count($union);
-        return $cantIntersec / $cantUnion;
+        return $cantUnion > 0 ? $cantIntersec / $cantUnion : 0;
     }
 
 
@@ -38,16 +38,13 @@ class Similitud
         Array $conjuntoD
     )
     {
-        //dd($conjuntoA);
-        //dump($conjuntoB);
         $interseccionAB = array_unique(array_intersect($conjuntoA, $conjuntoB));
-        //dd($interseccionAB);
         $interseccionCD = array_unique(array_intersect($conjuntoC, $conjuntoD));
         $cantIntersecAB = count($interseccionAB);
         $cantIntersecCD = count($interseccionCD);
-        $union = array_unique(array_merge($conjuntoA, $conjuntoB, $conjuntoC, $conjuntoD));
+        $union = array_unique(array_merge($conjuntoA,$conjuntoB,$conjuntoC,$conjuntoD));
         $cantUnion = count($union);
-        return ($cantIntersecAB + $cantIntersecCD) / $cantUnion;
+        return $cantUnion > 0 ? ($cantIntersecAB + $cantIntersecCD) / $cantUnion : 0;
     }
 
 }

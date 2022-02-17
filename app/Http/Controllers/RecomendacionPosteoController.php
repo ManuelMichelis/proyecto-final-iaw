@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Posteo;
 use App\Models\User;
 use App\Models\RecomendacionPosteo;
-use App\Engine\MotorRecomendacionPosteos;
+use App\Recomendacion\Engine\MotorRecomendacion;
+use App\Recomendacion\Learning\ActiveLearner;
+use App\Recomendacion\Valoracion;
 use Illuminate\Database\Eloquent\Collection;
 
-
-class RecomendacionPosteoController extends Controller
+class RecomendacionPosteoController extends RecomendacionController
 {
 
-    /**
-     * Determina si corresponde solicitar nuevas recomendaciones al
-     * motor de recomendacion de posteos
-     */
-    /*
-    protected function requiereRecomendacion () : boolean
-    {
-        return true;
-    }
-    */
+    const MAX_ITEMS_POR_RECOMENDACION = 10;
+    const MESES_ANTIGUEDAD_GUSTADOS = 3;
 
     /**
      * Muestra la seccion de recomendaciones de los posteos que pueden
@@ -32,55 +24,93 @@ class RecomendacionPosteoController extends Controller
     public function verRecomendaciones ()
     {
         $requiereNuevas = true;
-        $miUsuario = Auth::user();
+        $target = User::where('id',Auth::user()->id)->first();
         if ($requiereNuevas)
         {
             // Obtengo los 'me gusta' sobre exposiciones que no son mias, de los ultimos tres meses
-            $misGustados =
-                $miUsuario
-                    ->gustados
+            $misLikes =
+                $target->likes
                     ->where('id_referido', null)
-                    ->where('id_usuario', '!=', $miUsuario->id)
-                    ->where('created_at', '>=', now()->subMonth(3)->toDateTimeString());
+                    ->where('id_usuario', '!=', $target->id)
+                    ->where('created_at', '>=', now()->subMonth(self::MESES_ANTIGUEDAD_GUSTADOS)->toDateTimeString());
 
             // Obtengo los ids de las exposiciones que me gustaron
-            $idsExposicionesGustadas =
-                $miUsuario->idsExposicionesGustadas();
+            $idsGustadas =
+                $target->idsThreadsLikeados();
 
             // Obtengo aquellos posteos a los que no les he dado 'me gusta', del ultimo mes
-            $nuevosPosteos =
+            $posteosNuevos =
                 Posteo::all()
                     ->filter(
                         function($pos)
                         {
-                            $esComentario = $pos->esComentario();
-                            return !$esComentario;
+                            $target = User::where('id',Auth::user()->id)->first();
+                            return $pos->recomendable($target);
                         }
                     )
-                    ->whereNotIn('id', $idsExposicionesGustadas)
+                    ->whereNotIn('id', $idsGustadas)
                     ->where('created_at', '>=', now()->subMonth(1)->toDateTimeString());
 
             // Creo el motor de recomendaciones y le solicito sugerencias
-            $motor = new MotorRecomendacionPosteos($miUsuario, $misGustados, $nuevosPosteos);
+            $items = ["potenciales" => $posteosNuevos, "comparados" => $misLikes];
+            $motor = MotorRecomendacion::get();
+            $motor->setModoPosteos($target,$items);
             $motor->generarRecomendaciones();
         }
         $recomendaciones =
-            RecomendacionPosteo::where('id_usuario', $miUsuario->id)
-                ->orderBy('valor_recomendacion', 'desc')
-                ->limit(10)
+            RecomendacionPosteo::where('id_usuario', $target->id)
+                ->orderBy('valor', 'desc')
+                ->limit(self::MAX_ITEMS_POR_RECOMENDACION)
                 ->get();
 
-        // Por cada recomendacion que surgio, recupero el posteo
-        $posteosRecomendados = new Collection();
+        // Por cada recomendacion que surgió, recupero el posteo
+        $recomendados = new Collection();
         foreach ($recomendaciones as $rec)
         {
-            $idPosteo = $rec->id_posteo;
-            $posteo = Posteo::where('id', $idPosteo)->first();
-            $posteosRecomendados->add($posteo);
+            $id_posteo = $rec->id_recomendado;
+            $posteo = Posteo::where('id', $id_posteo)->first();
+            $recomendados->add($posteo);
         }
-
-        return view('./recomendaciones-posteo')->with('posteos', $posteosRecomendados);
+        return view('./recomendaciones-posteo')->with('posteos', $recomendados);
     }
 
+
+    public function verExposiciones()
+    {
+        $trainingSet = [];
+        $target = User::where('id',Auth::user()->id)->get()->first();
+        $likeados = $target->likes;
+        $dislikeados = $target->dislikes;
+        // Incorporo los pares (item,valor) para los 'me gusta'
+        foreach ($likeados as $likeado)
+        {
+            $item = Posteo::where('id', $likeado->id)->first();
+            $trainingSet[$item->id] = ["item" => $item, "valor" => Valoracion::LIKE];
+        }
+        // Incorporo los pares (item,valor) para los 'no me gusta'
+        foreach ($dislikeados as $dislikeado)
+        {
+            $item = Posteo::where('id', $dislikeado->id)->first();
+            $trainingSet[$item->id] = ["item" => $item, "valor" => Valoracion::DISLIKE];
+        }
+        $testSet = $target->posteosSinParticipacion();
+        //dd($trainingSet);
+        ActiveLearner::build($trainingSet,$testSet);
+        $propuestos = ActiveLearner::get()->propuesta();
+        $claves_propuestos = array_keys($propuestos);
+        dd($claves_propuestos);
+        $posteos_propuestos = [];
+        foreach ($claves_propuestos as $clave)
+        {
+            array_push($posteos_propuestos,Posteo::find($clave)->clave);
+        }
+        // Obtengo los posteos que deberán ser expuestos
+        dd($posteos_propuestos);
+
+
+
+
+
+    }
 
 }

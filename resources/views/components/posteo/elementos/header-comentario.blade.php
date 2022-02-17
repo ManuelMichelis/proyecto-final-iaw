@@ -5,9 +5,9 @@
             account_circle
         </span>
         &nbsp;
-        <a class="label-alias" href="{{ route('verUsuario', $posteo->aliasUsuario()) }}">
+        <a class="label-alias" href="{{ route('verUsuario', $posteo->aliasPublicador()) }}">
             <b>
-                {{ $posteo->aliasUsuario() }}
+                {{ $posteo->aliasPublicador() }}
             </b>
         </a>
     </div>
@@ -23,7 +23,7 @@
             <x-slot name="content">
                 @if (Auth::user()->haPublicado($posteo))
                     <x-dropdown-link
-                            onclick="requestEliminar(
+                            onclick="eliminarPosteo(
                                             {{ $posteo->id }},
                                             '{{ csrf_token() }}',
                                             '{{ route('borrarPosteo', ['id' => $posteo->id]) }}'

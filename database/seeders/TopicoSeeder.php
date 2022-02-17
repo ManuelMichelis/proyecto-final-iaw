@@ -45,13 +45,13 @@ class TopicoSeeder extends Seeder
 
         // LIBROS
         $topico = new Topico();
-        $topico->nombre = 'Libros';
+        $topico->nombre = 'Lectura';
         $topico->icono = base64_encode(file_get_contents(public_path().'\icons\top-libros.png'));
         $topico->save();
 
-        // HISTORIA
+        // DISCUSION
         $topico = new Topico();
-        $topico->nombre = 'Historia';
+        $topico->nombre = 'Discusion';
         $topico->icono = base64_encode(file_get_contents(public_path().'\icons\top-historia.png'));
         $topico->save();
 
@@ -73,11 +73,16 @@ class TopicoSeeder extends Seeder
         $topico->icono = base64_encode(file_get_contents(public_path().'\icons\top-politica.png'));
         $topico->save();
 
-        // ECONOMÍA Y MERCADOS
+        // MERCADOS
         $topico = new Topico();
-        $topico->nombre = 'Dinero y mercados';
+        $topico->nombre = 'Mercados';
         $topico->icono = base64_encode(file_get_contents(public_path().'\icons\top-economia.png'));
         $topico->save();
 
+        // NOTICIAS
+        $topico = new Topico();
+        $topico->nombre = 'Noticias';
+        $topico->icono = base64_encode(file_get_contents(public_path().'\icons\top-peliculas.png'));
+        $topico->save();
     }
 }

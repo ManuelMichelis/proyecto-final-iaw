@@ -23,7 +23,7 @@ class RecomendacionUser extends Model
      * @var array
      */
     protected $fillable = [
-        'valor_recomendacion',
+        'valor',
     ];
 
 

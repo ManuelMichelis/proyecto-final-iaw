@@ -49,7 +49,7 @@
                             <button
                                 id="btn_seguimiento_{{ $usuario->id }}"
                                 class="btn estado-siguiendo"
-                                onclick="requestActualizarSeguimiento(
+                                onclick="actualizarSeguimiento(
                                         {{ $usuario->id }},
                                         '{{ csrf_token() }}',
                                         '{{ route('actualizarSeguimiento',['id'=> $usuario->id]) }}'
@@ -60,7 +60,7 @@
                             <button
                                 id="btn_seguimiento_{{ $usuario->id }}"
                                 class="btn estado-sin-seguir"
-                                onclick="requestActualizarSeguimiento(
+                                onclick="actualizarSeguimiento(
                                         {{ $usuario->id }},
                                         '{{ csrf_token() }}',
                                         '{{ route('actualizarSeguimiento',['id'=> $usuario->id]) }}'

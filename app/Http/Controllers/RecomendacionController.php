@@ -20,6 +20,14 @@ abstract class RecomendacionController extends Controller
      * Muestra la seccion de recomendaciones para las entidades que
      * corresponde que sean sugeridas
      */
-    public abstract function verRecomendaciones ();
+    public abstract function verRecomendaciones();
+
+
+    /**
+     * Muestra una seccion de items propuestos al usuario para su
+     * inspección y valoración
+     */
+    public abstract function verExposiciones();
+
 
 }

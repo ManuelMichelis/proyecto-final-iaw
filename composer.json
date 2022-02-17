@@ -27,7 +27,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Engine\\": "app/Engine/"
+            "Recomendacion\\": "app/Recomendacion/",
+            "Recomendacion\\Engine\\": "app/Recomendacion/Engine/",
+            "Engine\\Estrategias\\": "app/Recomendacion/Engine/Estrategias",
+            "Recomendacion\\Learning\\": "app/Recomendacion/Learning/"
         }
     },
     "autoload-dev": {
